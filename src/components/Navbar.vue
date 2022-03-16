@@ -27,7 +27,37 @@ export default {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand" href="./index.html">Navbar</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarNavAltMarkup"
+    >
+      <div class="navbar-nav">
+        <router-link class="nav-item nav-link me-4 active" to="/"
+          >首頁</router-link
+        >
+        <router-link class="nav-item nav-link me-4" to="/products"
+          >產品列表</router-link
+        >
+        <router-link class="nav-item nav-link me-4" to="/cart"
+          >購物車</router-link
+        >
+      </div>
+    </div>
+  </nav>
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
       <a class="navbar-brand text-secondary" href="#">Navigant</a>
       <button
@@ -52,22 +82,9 @@ export default {
           <router-link to="/admin/coupons" class="nav-link text-white"
             >優惠券</router-link
           >
-          <!-- <router-link to="/admin/article" class="nav-link">貼文</router-link> -->
-          <!-- <button
-            @click="logout"
-            class="nav-link text-white btn-link bg-primary"
-          >
-            登出
-          </button> -->
           <a href="#" @click.prevent="signout" class="nav-link">登出</a>
         </div>
-        <!-- <div class="navbar-nav ms-auto">
-          <router-link to="/" class="nav-link text-white">前台頁面</router-link>
-          <router-link to="/cart" class="nav-link text-white"
-            >購物車</router-link
-          >
-        </div> -->
       </div>
     </div>
-  </nav>
+  </nav> -->
 </template>

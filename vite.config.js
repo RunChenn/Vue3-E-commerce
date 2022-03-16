@@ -11,7 +11,7 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [vue()],
-    base: process.env.NODE_ENV === 'production' ? '/Vue3-week7/' : './',
+    base: process.env.NODE_ENV === 'production' ? '/Vue3-E-commerce/' : './',
     // base:
     // process.env.NODE_ENV === 'production' ? '/Vue3-week6/' : env.VITE_APP_API,
 
