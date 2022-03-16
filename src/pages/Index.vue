@@ -39,6 +39,7 @@ export default {
     <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
     <Navbar />
+
     <div class="row justify-content-center">
       <div class="col">
         <router-view></router-view>

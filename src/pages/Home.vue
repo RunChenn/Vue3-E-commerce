@@ -1,8 +1,36 @@
 <script>
+import { ref, reactive, onMounted } from 'vue';
+
 export default {
   name: 'Home',
   setup() {
-    return {};
+    const cards = reactive([
+      {
+        title: '透氣輕盈 柔軟彈性',
+        text: '透氣舒適有效調解體溫 保護肌膚避免服裝破損',
+        imgUrl:
+          'https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1642347133690.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=MCf7QoAYKDpopNW6GB04FjhcyWY02GWYv8%2BhrrWh1Bt0ktRLfK%2BxEVA7%2BKRFRMG0SHghCIu4RrxQruY84GSU0VfB8p490swcs4JbI4gH5sHYXQBUvtLe0wZnTMRHhXElrro454oGFwiifpm6aCHUffYNIxnDR2nppU876QsxnSYaskiy5ywWEyjSaEtJjW%2F1ydj%2BVET3wl32w4y4En0Pl3r4UOl3v4zMfNf%2FWDCZOQPah2y%2Fvt5OCIuqn90WF4UzfGBTy92usV981V1avdT7%2FAolvd2%2FyHBCP0SIPlUtm%2FgGtUKyIU%2BN9Ht0Zepctlw18PPB36XV5cT%2BipUkcqHzvw%3D%3D',
+        imgAlt: '透氣輕盈 柔軟彈性',
+      },
+      {
+        title: '耐穿實用 跨界機能',
+        text: '強韌耐穿應付多變天氣 上班通勤方便多種場合',
+        imgUrl:
+          'https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1642347919234.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=cBLaqvuTWiP%2FN7xDKUcIYwXel87kRJvyIA1Wzxn21mAUpUMBX%2FzodmAaba53nCpFUofbRykTFl07OaBVKU6A%2BtnTIqm7mYJzmyfpZRHQk7vvkyoAbgG0nn3xakmVmCHmnpHIn%2FW3ETKdfgoUlYxTDCQJJ%2B8CbLEF8dHgKGUtvtTWc9SB4v7PHTxWbb%2F9DaGLmj6AvVUABaBj93SGpFoeLbNDOnDl4E8zvbCrUkN7f0wT1PXv6%2FsCHmwp9OuCX72iw1sgursmRVlY%2BQhshQ%2FqoofEon2JhH%2F5ST3hEJG75xyzgKoSysP%2BgXxozLY7%2Be5fsz0PRvO%2F1%2F1cLrYFXvUIYA%3D%3D',
+        imgAlt: '耐穿實用 跨界機能',
+      },
+      {
+        title: '休閒運動 與眾不同',
+        text: '自在活動挑戰最佳表現 打造簡約時尚機能造型',
+        imgUrl:
+          'https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1643270797486.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=VUvtmABM3r68OoFr0bpbcNZnn1AMKAM0LmvMni8dcOFMQfu5v2qEGyPuwmgA0MfqCTppzO5%2BK6nMj5pXsgWk73oCcG70nxEyBEPv3rdEKE8%2FTx30%2FrWlUN6NGEjxWlPbFuZ4IxhGewDUoWhoOg0jZ%2FyoAHPDwbI5Zbkb1EBDozDU3rpvLFsY6DO2ccdVdPmQdvZ1lHB%2FzrdYxYovDnMRaDF07dMq1BWCaK02IrHb%2FEwD%2F9KAltBJOZz45ToJKj1Egt4kK3bozNh2WEQFjbvt95Lilr2uQd3ZlI8f6EwwcLqITwmdhKlAjpvFZe7mnmoUvOoTPPCLngogZRou2KU%2FBA%3D%3D',
+        imgAlt: '休閒運動 與眾不同',
+      },
+    ]);
+
+    return {
+      cards,
+    };
   },
 };
 </script>
@@ -75,7 +103,24 @@ export default {
     </div>
     <div class="container">
       <div class="row mt-5">
-        <div class="col-md-4 mt-md-4">
+        <div class="col-md-4 mt-md-4" v-for="card in cards" :key="card.title">
+          <div class="card border-0 mb-4">
+            <img
+              :src="card.imgUrl"
+              class="card-img-top rounded-0"
+              :alt="card.imgAlt"
+            />
+            <div class="card-body text-center">
+              <h4>{{ card.title }}</h4>
+              <div class="d-flex justify-content-between">
+                <p class="card-text text-muted mb-0">
+                  {{ card.text }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-md-4 mt-md-4">
           <div class="card border-0 mb-4">
             <img
               src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
@@ -110,25 +155,7 @@ export default {
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-4 mt-md-4">
-          <div class="card border-0 mb-4">
-            <img
-              src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
-              class="card-img-top rounded-0"
-              alt="..."
-            />
-            <div class="card-body text-center">
-              <h4>Lorem ipsum</h4>
-              <div class="d-flex justify-content-between">
-                <p class="card-text text-muted mb-0">
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                  diam nonumy eirmod.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="bg-light mt-7">

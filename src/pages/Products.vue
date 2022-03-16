@@ -41,6 +41,8 @@ export default {
       try {
         const prodsData = await api.products.getProductsAll();
 
+        console.log(prodsData);
+
         products.value = prodsData.products;
         isLoading.value = false;
       } catch (err) {
