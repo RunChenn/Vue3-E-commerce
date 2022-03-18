@@ -5,18 +5,22 @@ import api from '../api/index.js';
 import { Modal } from 'bootstrap';
 
 import ProdsTable from '../components/ProdsTable.vue';
+import Pagination from '../components/Pagination.vue';
 import Carts from '../components/Carts.vue';
 import Form from '../components/Form.vue';
 import ProdModal from '../components/ProdModal.vue';
 
 export default {
-  components: { ProdModal, ProdsTable, Carts, Form },
+  components: { ProdModal, ProdsTable, Pagination, Carts, Form },
   name: 'Products',
   setup() {
     const isLoading = ref(false);
     // const fullPage = ref(true);
 
+    const pagination = ref({});
+
     const products = ref([]);
+    const categorys = ref([]);
     const product = ref({});
     const cart = ref({});
 
@@ -29,19 +33,29 @@ export default {
     onMounted(async () => {
       isLoading.value = true;
 
-      productModal.value = new Modal(document.getElementById('productModal'), {
-        keyboard: false,
-      });
+      // productModal.value = new Modal(document.getElementById('productModal'), {
+      //   keyboard: false,
+      // });
 
       getProducts();
     });
 
     // 載入所有商品
-    const getProducts = async () => {
+    const getProducts = async (page = 1) => {
       try {
-        const prodsData = await api.products.getProductsAll();
+        // const prodsData = await api.products.getProductsAll();
+        const prodsData = await api.adminProducts.getProducts(page);
 
-        console.log(prodsData);
+        console.log(prodsData.products);
+
+        const data = prodsData.products;
+        pagination.value = prodsData.pagination;
+
+        let categoryList = data.map((ele) => ele.category);
+
+        categorys.value = [...new Set(categoryList)];
+
+        console.log(categorys.value);
 
         products.value = prodsData.products;
         isLoading.value = false;
@@ -105,10 +119,13 @@ export default {
       isLoading,
       // fullPage,
       products,
+      pagination,
+      categorys,
       product,
       cart,
       loadingStatus,
       getProduct,
+      getProducts,
       // getCart,
       addToCart,
     };
@@ -142,7 +159,11 @@ export default {
           class="accordion border border-bottom border-top-0 border-start-0 border-end-0 mb-3"
           id="accordionExample"
         >
-          <div class="card border-0">
+          <div
+            class="card border-0"
+            v-for="category in categorys"
+            :key="category"
+          >
             <div
               class="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0"
               id="headingOne"
@@ -152,7 +173,7 @@ export default {
               <div
                 class="d-flex justify-content-between align-items-center pe-1"
               >
-                <h4 class="mb-0">Lorem ipsum</h4>
+                <h4 class="mb-0">{{ category }}</h4>
                 <i class="fas fa-chevron-down"></i>
               </div>
             </div>
@@ -183,304 +204,18 @@ export default {
               </div>
             </div>
           </div>
-          <div class="card border-0">
-            <div
-              class="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0"
-              id="headingTwo"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseTwo"
-            >
-              <div
-                class="d-flex justify-content-between align-items-center pe-1"
-              >
-                <h4 class="mb-0">Lorem ipsum</h4>
-                <i class="fas fa-chevron-down"></i>
-              </div>
-            </div>
-            <div
-              id="collapseTwo"
-              class="collapse"
-              aria-labelledby="headingTwo"
-              data-bs-parent="#accordionExample"
-            >
-              <div class="card-body py-0">
-                <ul class="list-unstyled">
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="card border-0">
-            <div
-              class="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0"
-              id="headingThree"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseThree"
-            >
-              <div
-                class="d-flex justify-content-between align-items-center pe-1"
-              >
-                <h4 class="mb-0">Lorem ipsum</h4>
-                <i class="fas fa-chevron-down"></i>
-              </div>
-            </div>
-            <div
-              id="collapseThree"
-              class="collapse"
-              aria-labelledby="headingThree"
-              data-bs-parent="#accordionExample"
-            >
-              <div class="card-body py-0">
-                <ul class="list-unstyled">
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card border-0 mb-4 position-relative position-relative">
-              <img
-                src="https://images.unsplash.com/photo-1591843336741-9f1238f66758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <a href="#" class="text-dark">
-                <i
-                  class="far fa-heart position-absolute"
-                  style="right: 16px; top: 16px"
-                ></i>
-              </a>
-              <div class="card-body p-0">
-                <h4 class="mb-0 mt-3">
-                  <a href="./detail.html">Lorem ipsum</a>
-                </h4>
-                <p class="card-text mb-0">
-                  NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                </p>
-                <p class="text-muted mt-3"></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card border-0 mb-4 position-relative position-relative">
-              <img
-                src="https://images.unsplash.com/photo-1591843336741-9f1238f66758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <a href="#" class="text-dark">
-                <i
-                  class="far fa-heart position-absolute"
-                  style="right: 16px; top: 16px"
-                ></i>
-              </a>
-              <div class="card-body p-0">
-                <h4 class="mb-0 mt-3">
-                  <a href="./detail.html">Lorem ipsum</a>
-                </h4>
-                <p class="card-text mb-0">
-                  NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                </p>
-                <p class="text-muted mt-3"></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card border-0 mb-4 position-relative position-relative">
-              <img
-                src="https://images.unsplash.com/photo-1591843336741-9f1238f66758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <a href="#" class="text-dark">
-                <i
-                  class="far fa-heart position-absolute"
-                  style="right: 16px; top: 16px"
-                ></i>
-              </a>
-              <div class="card-body p-0">
-                <h4 class="mb-0 mt-3">
-                  <a href="./detail.html">Lorem ipsum</a>
-                </h4>
-                <p class="card-text mb-0">
-                  NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                </p>
-                <p class="text-muted mt-3"></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card border-0 mb-4 position-relative position-relative">
-              <img
-                src="https://images.unsplash.com/photo-1591843336741-9f1238f66758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <a href="#" class="text-dark">
-                <i
-                  class="far fa-heart position-absolute"
-                  style="right: 16px; top: 16px"
-                ></i>
-              </a>
-              <div class="card-body p-0">
-                <h4 class="mb-0 mt-3">
-                  <a href="./detail.html">Lorem ipsum</a>
-                </h4>
-                <p class="card-text mb-0">
-                  NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                </p>
-                <p class="text-muted mt-3"></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card border-0 mb-4 position-relative position-relative">
-              <img
-                src="https://images.unsplash.com/photo-1591843336741-9f1238f66758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <a href="#" class="text-dark">
-                <i
-                  class="far fa-heart position-absolute"
-                  style="right: 16px; top: 16px"
-                ></i>
-              </a>
-              <div class="card-body p-0">
-                <h4 class="mb-0 mt-3">
-                  <a href="./detail.html">Lorem ipsum</a>
-                </h4>
-                <p class="card-text mb-0">
-                  NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                </p>
-                <p class="text-muted mt-3"></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card border-0 mb-4 position-relative position-relative">
-              <img
-                src="https://images.unsplash.com/photo-1591843336741-9f1238f66758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <a href="#" class="text-dark">
-                <i
-                  class="far fa-heart position-absolute"
-                  style="right: 16px; top: 16px"
-                ></i>
-              </a>
-              <div class="card-body p-0">
-                <h4 class="mb-0 mt-3">
-                  <a href="./detail.html">Lorem ipsum</a>
-                </h4>
-                <p class="card-text mb-0">
-                  NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                </p>
-                <p class="text-muted mt-3"></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card border-0 mb-4 position-relative position-relative">
-              <img
-                src="https://images.unsplash.com/photo-1591843336741-9f1238f66758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <a href="#" class="text-dark">
-                <i
-                  class="far fa-heart position-absolute"
-                  style="right: 16px; top: 16px"
-                ></i>
-              </a>
-              <div class="card-body p-0">
-                <h4 class="mb-0 mt-3">
-                  <a href="./detail.html">Lorem ipsum</a>
-                </h4>
-                <p class="card-text mb-0">
-                  NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                </p>
-                <p class="text-muted mt-3"></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card border-0 mb-4 position-relative position-relative">
-              <img
-                src="https://images.unsplash.com/photo-1591843336741-9f1238f66758?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1867&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <a href="#" class="text-dark">
-                <i
-                  class="far fa-heart position-absolute"
-                  style="right: 16px; top: 16px"
-                ></i>
-              </a>
-              <div class="card-body p-0">
-                <h4 class="mb-0 mt-3">
-                  <a href="./detail.html">Lorem ipsum</a>
-                </h4>
-                <p class="card-text mb-0">
-                  NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                </p>
-                <p class="text-muted mt-3"></p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <nav class="d-flex justify-content-center">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li class="page-item active">
-              <a class="page-link" href="#">1</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <!-- 產品列表 -->
+        <ProdsTable
+          v-model:products="products"
+          v-model:loadingStatus="loadingStatus"
+          @get-product="getProducts"
+          @add-to-cart="addToCart"
+        />
+
+        <Pagination v-model:pages="pagination" @update-pages="getProducts" />
       </div>
     </div>
   </div>

@@ -1,4 +1,6 @@
 <script>
+import { watch } from 'vue';
+
 export default {
   props: {
     products: {
@@ -20,6 +22,13 @@ export default {
       emit('getProduct', id);
     };
 
+    watch(
+      () => props.products,
+      (val) => {
+        console.log(val);
+      }
+    );
+
     return {
       openModal,
     };
@@ -28,7 +37,33 @@ export default {
 </script>
 
 <template>
-  <div class="prodsTable">
+  <div class="row">
+    <div class="col-md-6" v-for="item in products" :key="item.id">
+      <div class="card border-0 mb-4 position-relative position-relative">
+        <img :src="item.imageUrl" class="card-img-top rounded-0" alt="..." />
+        <a href="#" class="text-dark">
+          <i
+            class="far fa-heart position-absolute"
+            style="right: 16px; top: 16px"
+          ></i>
+        </a>
+        <div class="card-body p-0">
+          <h4 class="mb-0 mt-3">
+            <a href="./detail.html">{{ item.title }}</a>
+          </h4>
+          <p class="card-text mb-0">
+            NT${{ item.price }}
+            <span class="text-muted"
+              ><del>NT${{ item.origin_price }}</del></span
+            >
+          </p>
+          <p class="text-muted mt-3"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="prodsTable">
     <div class="row">
       <div class="col-12 col-sm-12">
         <h5>產品列表</h5>
@@ -99,7 +134,7 @@ export default {
         </table>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <style lang="scss" scoped>
