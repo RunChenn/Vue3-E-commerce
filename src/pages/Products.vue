@@ -44,8 +44,9 @@ export default {
     const getProducts = async (page = 1) => {
       try {
         // const prodsData = await api.products.getProductsAll();
-        const prodsData = await api.adminProducts.getProducts(page);
+        const prodsData = await api.products.getProducts(page);
 
+        console.log(prodsData);
         console.log(prodsData.products);
 
         const data = prodsData.products;
@@ -114,6 +115,10 @@ export default {
       }
     };
 
+    const toDetail = async (row) => {
+      router.push({ path: `/apps-list/members/detail/${row._id}` });
+    };
+
     return {
       // ...toRefs(form),
       isLoading,
@@ -128,6 +133,7 @@ export default {
       getProducts,
       // getCart,
       addToCart,
+      toDetail,
     };
   },
 };

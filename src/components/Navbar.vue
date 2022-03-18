@@ -48,6 +48,9 @@ export default {
         <router-link class="nav-item nav-link me-4 active" to="/"
           >首頁</router-link
         >
+        <router-link class="nav-item nav-link me-4 active" to="/about"
+          >關於我們</router-link
+        >
         <router-link class="nav-item nav-link me-4" to="/products"
           >產品列表</router-link
         >

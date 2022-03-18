@@ -5,6 +5,10 @@ export default {
   getProductsAll: () => {
     return axiosInstance.get(`/api/${apiPath}/products/all`);
   },
+  // 取得 所有商品資訊 pages
+  getProducts: (page) => {
+    return axiosInstance.get(`/api/${apiPath}/products?page=${page}`);
+  },
   // 取得 商品資訊
   getProduct: (id) => {
     return axiosInstance.get(`/api/${apiPath}/product/${id}`);

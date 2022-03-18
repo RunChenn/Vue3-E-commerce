@@ -10,6 +10,9 @@ import './scss/custom.scss';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
+import '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/free-regular-svg-icons';
+import '@fortawesome/free-solid-svg-icons';
 import 'jquery';
 import 'bootstrap';
 

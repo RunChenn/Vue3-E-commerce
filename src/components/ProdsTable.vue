@@ -40,16 +40,22 @@ export default {
   <div class="row">
     <div class="col-md-6" v-for="item in products" :key="item.id">
       <div class="card border-0 mb-4 position-relative position-relative">
-        <img :src="item.imageUrl" class="card-img-top rounded-0" alt="..." />
+        <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }">
+          <img :src="item.imageUrl" class="card-img-top rounded-0" alt="..." />
+        </router-link>
         <a href="#" class="text-dark">
           <i
-            class="far fa-heart position-absolute"
+            class="fas fa-heart position-absolute"
             style="right: 16px; top: 16px"
           ></i>
         </a>
         <div class="card-body p-0">
           <h4 class="mb-0 mt-3">
-            <a href="./detail.html">{{ item.title }}</a>
+            <router-link
+              :to="{ name: 'ProductDetail', params: { id: item.id } }"
+              >{{ item.title }}</router-link
+            >
+            <!-- <a href="./detail.html">{{ item.title }}</a> -->
           </h4>
           <p class="card-text mb-0">
             NT${{ item.price }}

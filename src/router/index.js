@@ -55,6 +55,15 @@ const routes = [
         },
       },
       {
+        path: '',
+        name: 'About',
+        component: () => import('../pages/About.vue'),
+        meta: {
+          layout: 'about',
+          requiresAuth: false,
+        },
+      },
+      {
         path: '/products',
         name: 'Products',
         component: () => import('../pages/Products.vue'),
@@ -62,11 +71,14 @@ const routes = [
           requiresAuth: false,
         },
       },
-      // {
-      //   path: '/product/:id',
-      //   name: '產品頁面',
-      //   component: () => import('../pages/Product.vue'),
-      // },
+      {
+        path: '/product/:id',
+        name: 'ProductDetail',
+        component: () => import('../pages/ProductDetail.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
       {
         path: '/cart',
         name: '購物車',
