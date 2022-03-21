@@ -21,7 +21,7 @@ export default {
 
     const products = ref([]);
     const categorys = ref([]);
-    const product = ref({});
+
     const cart = ref({});
 
     const productModal = ref(null);
@@ -62,21 +62,6 @@ export default {
         isLoading.value = false;
       } catch (err) {
         isLoading.value = false;
-        alert(err.message);
-      }
-    };
-
-    // 載入單一商品
-    const getProduct = async (id) => {
-      loadingStatus.loadingItem = id;
-
-      try {
-        const prodsData = await api.products.getProduct(id);
-
-        loadingStatus.loadingItem = '';
-
-        product.value = prodsData.product;
-      } catch (err) {
         alert(err.message);
       }
     };
@@ -129,7 +114,6 @@ export default {
       product,
       cart,
       loadingStatus,
-      getProduct,
       getProducts,
       // getCart,
       addToCart,

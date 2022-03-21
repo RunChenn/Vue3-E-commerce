@@ -10,6 +10,19 @@ import './scss/custom.scss';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 
+// import Swiper from 'swiper';
+// import 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+import SwiperCore, {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Autoplay,
+} from 'swiper';
+import 'swiper/css';
+
 import '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/free-regular-svg-icons';
 import '@fortawesome/free-solid-svg-icons';
@@ -31,6 +44,10 @@ app.config.globalProperties.$filters = {
 // });
 
 app.component('Loading', Loading);
+app.component('Swiper', Swiper);
+app.component('SwiperSlide', SwiperSlide);
+
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 
 // app.use(Loading);
 app.use(veeValidate);

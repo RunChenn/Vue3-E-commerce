@@ -21,3 +21,31 @@ $secondary: #f3d420;
 // @import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 // @import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+@mixin desktop-below {
+  @media (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin pad {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: 600px) {
+    @content;
+  }
+}
+
+.tabProdsImg {
+  max-width: 450px;
+  max-height: 550px;
+  width: 55%;
+
+  @include pad {
+    width: 100% !important;
+  }
+}
