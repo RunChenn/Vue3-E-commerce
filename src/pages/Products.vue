@@ -111,7 +111,6 @@ export default {
       products,
       pagination,
       categorys,
-      product,
       cart,
       loadingStatus,
       getProducts,
@@ -124,55 +123,22 @@ export default {
 </script>
 
 <template>
-  <div
-    class="position-relative d-flex align-items-center justify-content-center"
-    style="min-height: 400px"
-  >
-    <div
-      class="position-absolute"
-      style="
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-image: url(https://images.unsplash.com/photo-1480399129128-2066acb5009e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80);
-        background-position: center center;
-        opacity: 0.1;
-      "
-    ></div>
+  <div class="position-relative d-flex align-items-center justify-content-center" style="min-height: 400px">
+    <div class="position-absolute" style="top: 0; bottom: 0; left: 0; right: 0; background-image: url(https://images.unsplash.com/photo-1480399129128-2066acb5009e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80); background-position: center center; opacity: 0.1"></div>
     <h2 class="fw-bold">Lorem ipsum.</h2>
   </div>
   <div class="container mt-md-5 mt-3 mb-7">
     <div class="row">
       <div class="col-md-4">
-        <div
-          class="accordion border border-bottom border-top-0 border-start-0 border-end-0 mb-3"
-          id="accordionExample"
-        >
-          <div
-            class="card border-0"
-            v-for="category in categorys"
-            :key="category"
-          >
-            <div
-              class="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0"
-              id="headingOne"
-              data-bs-toggle="collapse"
-              data-bs-target="#collapseOne"
-            >
-              <div
-                class="d-flex justify-content-between align-items-center pe-1"
-              >
+        <div class="accordion border border-bottom border-top-0 border-start-0 border-end-0 mb-3" id="accordionExample">
+          <div class="card border-0" v-for="category in categorys" :key="category">
+            <div class="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0" id="headingOne" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+              <div class="d-flex justify-content-between align-items-center pe-1">
                 <h4 class="mb-0">{{ category }}</h4>
                 <i class="fas fa-chevron-down"></i>
               </div>
             </div>
-            <div
-              id="collapseOne"
-              class="collapse show"
-              aria-labelledby="headingOne"
-              data-bs-parent="#accordionExample"
-            >
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
               <div class="card-body py-0">
                 <ul class="list-unstyled">
                   <li>
@@ -198,12 +164,7 @@ export default {
       </div>
       <div class="col-md-8">
         <!-- 產品列表 -->
-        <ProdsTable
-          v-model:products="products"
-          v-model:loadingStatus="loadingStatus"
-          @get-product="getProducts"
-          @add-to-cart="addToCart"
-        />
+        <ProdsTable v-model:products="products" v-model:loadingStatus="loadingStatus" @get-product="getProducts" @add-to-cart="addToCart" />
 
         <Pagination v-model:pages="pagination" @update-pages="getProducts" />
       </div>

@@ -35,18 +35,17 @@ export default {
 </script>
 
 <template>
-  <div class="container">
-    <!-- Loading -->
-    <Loading v-model:active="isLoading" :is-full-page="true" />
-    <Navbar />
-
+  <!-- Loading -->
+  <Loading v-model:active="isLoading" :is-full-page="true" />
+  <Navbar />
+  <div class="container pt-4">
     <div class="row justify-content-center">
       <div class="col">
         <router-view></router-view>
       </div>
     </div>
-    <Footer />
   </div>
+  <Footer />
 </template>
 
 <style lang="scss" scoped></style>
