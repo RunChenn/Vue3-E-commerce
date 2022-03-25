@@ -7,6 +7,7 @@ const routes = [
     name: 'Login',
     component: () => import('../pages/Login.vue'),
     meta: {
+      title: '登入',
       layout: 'Login',
       requiresAuth: false,
     },
@@ -44,21 +45,26 @@ const routes = [
     path: '/',
     name: 'Index',
     component: () => import('../pages/Index.vue'),
+    meta: {
+      title: '首頁',
+    },
     children: [
       {
         path: '',
         name: 'Home',
         component: () => import('../pages/Home.vue'),
         meta: {
+          title: '首頁',
           layout: 'home',
           requiresAuth: false,
         },
       },
       {
-        path: '',
+        path: '/about',
         name: 'About',
         component: () => import('../pages/About.vue'),
         meta: {
+          title: '關於我們',
           layout: 'about',
           requiresAuth: false,
         },
@@ -68,6 +74,7 @@ const routes = [
         name: 'Products',
         component: () => import('../pages/Products.vue'),
         meta: {
+          title: '全部商品',
           requiresAuth: false,
         },
       },
@@ -76,6 +83,7 @@ const routes = [
         name: 'ProductDetail',
         component: () => import('../pages/ProductDetail.vue'),
         meta: {
+          title: '詳細商品',
           requiresAuth: false,
         },
       },
@@ -84,6 +92,7 @@ const routes = [
         name: '購物車',
         component: () => import('../pages/Cart.vue'),
         meta: {
+          title: '購物車',
           requiresAuth: false,
         },
       },

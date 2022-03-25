@@ -44,7 +44,7 @@ export default {
     <div class="container">
       <div class="d-flex align-items-center justify-content-between text-white mb-md-7 mb-4">
         <router-link :to="{ name: 'Index' }">
-          <img src="../assets/img_footlogo.png" class="card-img-top rounded-0" width="100px" alt="Logo" />
+          <img src="../assets/img/img_footlogo.png" class="card-img-top rounded-0" width="100px" alt="Logo" />
         </router-link>
         <ul class="d-flex list-unstyled mb-0 h4">
           <li>
