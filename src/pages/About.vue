@@ -1,7 +1,7 @@
 <script>
 import { ref, reactive, onMounted } from 'vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
-import SwiperSlide from '../components/SwiperSlide.vue';
+import SwiperSlide from '../components/Carousel.vue';
 
 export default {
   components: { Breadcrumb, SwiperSlide },
@@ -13,7 +13,7 @@ export default {
 </script>
 
 <template>
-  <div class="about">
+  <div class="container about">
     <SwiperSlide />
     <Breadcrumb class="mt-5" />
     <div class="mb-5">
@@ -70,16 +70,16 @@ export default {
   .about-card-first {
     /* position: relative; */
     margin: 10px 0 50px 0;
+    .about-img-position {
+      position: absolute;
+      top: -150px;
+      right: 30px;
+      height: 480px;
+    }
     /* .about-card-first-main {
       display: table;
       margin: -10% 15px 0 auto;
       width: 30%;
-      .about-img-position {
-        position: absolute;
-        top: -150px;
-        right: 30px;
-        height: 480px;
-      }
     } */
   }
 

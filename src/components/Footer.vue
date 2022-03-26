@@ -48,17 +48,17 @@ export default {
         </router-link>
         <ul class="d-flex list-unstyled mb-0 h4">
           <li>
-            <a href="#" class="text-white mx-3"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.facebook.com/Navigant-114264293299738" class="text-white mx-3"><i class="fab fa-facebook"></i></a>
           </li>
           <li>
-            <a href="#" class="text-white mx-3"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.instagram.com/navigant_italy/" class="text-white mx-3"><i class="fab fa-instagram"></i></a>
           </li>
-          <li>
+          <!-- <li>
             <a href="#" class="text-white ms-3"><i class="fab fa-line"></i></a>
-          </li>
+          </li> -->
         </ul>
       </div>
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end align-items-start text-white">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end align-items-start text-white text-start">
         <div class="mb-md-0 mb-1">
           <p class="mb-0">02-8262-3578</p>
           <p class="mb-0">navigant@gmail.com</p>

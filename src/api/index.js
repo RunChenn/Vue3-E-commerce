@@ -2,6 +2,7 @@ import auth from './auth';
 import products from './products';
 import cart from './cart';
 import order from './order';
+import coupon from './coupon';
 
 // admin
 import adminAuth from './admin/auth';
@@ -14,6 +15,7 @@ export default {
   products,
   cart,
   order,
+  coupon,
 
   adminAuth,
   adminProducts,

@@ -3,9 +3,10 @@ import api from '../api/index.js';
 import { ref, reactive, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Breadcrumb from '../components/Breadcrumb.vue';
+import RelatedProds from '../components/RelatedProds.vue';
 
 export default {
-  components: { Breadcrumb },
+  components: { Breadcrumb, RelatedProds },
   name: 'Home',
   setup() {
     const isLoading = ref(false);
@@ -13,6 +14,12 @@ export default {
     const product = ref({});
 
     const route = useRoute();
+
+    const loadingStatus = reactive({
+      loadingItem: '',
+    });
+
+    const qty = ref(1);
 
     onMounted(async () => {
       isLoading.value = true;
@@ -24,12 +31,8 @@ export default {
 
     // 載入單一商品
     const getProduct = async (id) => {
-      // loadingStatus.loadingItem = id;
-
       try {
         const prodsData = await api.products.getProduct(id);
-
-        // loadingStatus.loadingItem = '';
 
         console.log(prodsData);
 
@@ -41,16 +44,32 @@ export default {
       }
     };
 
-    const swipImg = ref([
-      'https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-      'https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-      'https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-      'https://images.unsplash.com/photo-1490312278390-ab64016e0aa9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-    ]);
+    // 加入購物車
+    const addToCart = async (id) => {
+      try {
+        loadingStatus.loadingItem = id;
+
+        const cart = {
+          product_id: id,
+          qty: qty.value,
+        };
+
+        const res = await api.cart.addCart({ data: cart });
+
+        alert(res.message);
+
+        loadingStatus.loadingItem = '';
+
+        // getCart();
+      } catch (err) {
+        alert(err.message);
+      }
+    };
 
     return {
+      qty,
       product,
-      swipImg,
+      addToCart,
     };
   },
 };
@@ -59,7 +78,7 @@ export default {
 <template>
   <div class="productDetail">
     <div class="row align-items-center">
-      <div class="col-md-7">
+      <div class="col-md-6">
         <div id="prodImgControls" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner">
             <div class="carousel-item" v-for="(img, index) in product.imagesUrl" :key="img" :class="[index == 0 ? 'active' : '']">
@@ -76,7 +95,7 @@ export default {
           </button>
         </div>
       </div>
-      <div class="col-md-5">
+      <div class="col-md-6">
         <Breadcrumb />
         <!-- <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-white px-0 mb-0 py-3">
@@ -102,7 +121,7 @@ export default {
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
-              <input type="text" class="form-control border-0 text-center my-auto shadow-none bg-light" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" value="1" />
+              <input type="text" class="form-control border-0 text-center my-auto shadow-none bg-light" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" v-model="qty" />
               <div class="input-group-append">
                 <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon2">
                   <i class="fas fa-plus"></i>
@@ -111,7 +130,7 @@ export default {
             </div>
           </div>
           <div class="col-6">
-            <button class="text-nowrap btn btn-dark w-100 py-2" @click="$emit('add-to-cart', product.id, qty)">加入購物車</button>
+            <button class="text-nowrap btn btn-dark w-100 py-2" @click="addToCart(product.id)">加入購物車</button>
           </div>
         </div>
       </div>
@@ -151,51 +170,9 @@ export default {
             <p class="mb-1 fw-bold">※ 提醒您，若您無故或惡意三次(含)以上違反Navigant制定訂購與退貨相關規則，本公司有權暫停您的帳號並拒絕您使用本服務，同時列為交易黑名單，請您留意。</p>
           </div>
         </div>
-        <h3 class="fw-bold">Lorem ipsum dolor sit amet</h3>
-        <div class="mt-4 mb-5">
-          <swiper
-            class="swiper-container"
-            :navigation="{
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            }"
-            :pagination="{ clickable: true }"
-            :autoplay="{
-              autoplay: true,
-              delay: 2500,
-              disableOnInteraction: false,
-            }"
-            loop
-            :slidesPerView="2"
-            :spaceBetween="10"
-            :breakpoints="{
-              767: {
-                slidesPerView: 3,
-                spaceBetween: 30,
-              },
-            }"
-          >
-            <swiper-slide class="swiper-slide" v-for="(banner, index) in swipImg" :key="index">
-              <!-- <img style="width: 100%; height: 200px" :src="banner" alt="" /> -->
-              <div class="card border-0 mb-4 position-relative position-relative">
-                <img class="card-img-top rounded-0" :src="banner" alt="" />
-                <a href="#" class="text-dark"> </a>
-                <div class="card-body p-0">
-                  <h4 class="mb-0 mt-3"><a href="#">Lorem ipsum</a></h4>
-                  <p class="card-text mb-0">
-                    NT$1,080 <span class="text-muted"><del>NT$1,200</del></span>
-                  </p>
-                  <p class="text-muted mt-3"></p>
-                </div>
-              </div>
-            </swiper-slide>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
-            <div class="swiper-button-next"></div>
-            <!--右箭头。如果放置在swiper-container外面，需要自定义样式。-->
-          </swiper>
-        </div>
+
+        <h3 class="fw-bold">相關產品</h3>
+        <RelatedProds />
       </div>
       <!-- <div class="col-md-4">
         <p>
@@ -214,11 +191,15 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.swiper-container {
-  --swiper-theme-color: #ff6600;
-  --swiper-pagination-color: #00ff33; /* 两种都可以 */
-  --swiper-navigation-color: #00ff33; /* 单独设置按钮颜色 */
-  --swiper-navigation-size: 20px; /* 设置按钮大小 */
+<style scoped lang="scss">
+.pic {
+  width: 500px;
+  height: 350px;
+  img {
+    width: 500px;
+    height: 350px;
+
+    object-fit: contain;
+  }
 }
 </style>

@@ -9,9 +9,10 @@ import Pagination from '../components/Pagination.vue';
 import Carts from '../components/Carts.vue';
 import Form from '../components/Form.vue';
 import ProdModal from '../components/ProdModal.vue';
+import Carousel from '../components/Carousel.vue';
 
 export default {
-  components: { ProdModal, ProdsTable, Pagination, Carts, Form },
+  components: { Carousel, ProdModal, ProdsTable, Pagination, Carts, Form },
   name: 'Products',
   setup() {
     const isLoading = ref(false);
@@ -58,7 +59,7 @@ export default {
 
         console.log(categorys.value);
 
-        products.value = prodsData.products;
+        products.value = data;
         isLoading.value = false;
       } catch (err) {
         isLoading.value = false;
@@ -77,29 +78,6 @@ export default {
     //   }
     // };
 
-    // 加入購物車
-    const addToCart = async (id, qty = 1) => {
-      productModal.value.hide();
-      try {
-        loadingStatus.loadingItem = id;
-
-        const cart = {
-          product_id: id,
-          qty,
-        };
-
-        const res = await api.cart.addCart({ data: cart });
-
-        alert(res.message);
-
-        loadingStatus.loadingItem = '';
-
-        // getCart();
-      } catch (err) {
-        alert(err.message);
-      }
-    };
-
     const toDetail = async (row) => {
       router.push({ path: `/apps-list/members/detail/${row._id}` });
     };
@@ -115,7 +93,7 @@ export default {
       loadingStatus,
       getProducts,
       // getCart,
-      addToCart,
+      // addToCart,
       toDetail,
     };
   },
@@ -123,13 +101,25 @@ export default {
 </script>
 
 <template>
-  <div class="position-relative d-flex align-items-center justify-content-center" style="min-height: 400px">
-    <div class="position-absolute" style="top: 0; bottom: 0; left: 0; right: 0; background-image: url(https://images.unsplash.com/photo-1480399129128-2066acb5009e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80); background-position: center center; opacity: 0.1"></div>
-    <h2 class="fw-bold">Lorem ipsum.</h2>
-  </div>
-  <div class="container mt-md-5 mt-3 mb-7">
-    <div class="row">
-      <div class="col-md-4">
+  <!-- <div class="position-relative d-flex align-items-center justify-content-center mb-5" style="min-height: 400px">
+    <div
+      class="position-absolute"
+      style="
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-image: url(https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1648265496572.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=MRRLCqL%2BVKcW2P9yKj9QRvv6vP%2B31cDGBDh6P81LFSxJqybHMYDlF%2FZDbGciNeT6HxHAzeeceG5WqNWdXt1%2FcUyNvzPL0DtxiJph9SUXLeej4ME7JASFYun2Dj8oQheYbNEXDosL7PfeU6L7rVmayIRq0%2FvjFUD4RTG%2BXHkXoA2iXejQJEIevVs7O%2BbUm63fHJufqZK9%2FfPSUMdv%2FT4WxCzIT82P8urFxZwfER142CBC4vO5UEgGDGKB6NQ%2B%2Fnqjpdlkfb4q9QOjYyVaw542G9B6ckSvlf%2B53%2B2pr8VtzqcwsHRE%2FMs0ZOw7AVRejw9T3T2IQBIPEp4ORzRg4Z1xUw%3D%3D);
+        background-position: center center;
+        opacity: 0.1;
+      "
+    ></div>
+    <h2 class="fw-bold">NAVIGANT</h2>
+  </div> -->
+  <div class="container mb-5">
+    <Carousel />
+    <div class="row mt-3">
+      <div class="col-md-3">
         <div class="accordion border border-bottom border-top-0 border-start-0 border-end-0 mb-3" id="accordionExample">
           <div class="card border-0" v-for="category in categorys" :key="category">
             <div class="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0" id="headingOne" data-bs-toggle="collapse" data-bs-target="#collapseOne">
@@ -162,7 +152,7 @@ export default {
           </div>
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-9">
         <!-- 產品列表 -->
         <ProdsTable v-model:products="products" v-model:loadingStatus="loadingStatus" @get-product="getProducts" @add-to-cart="addToCart" />
 

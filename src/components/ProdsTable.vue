@@ -38,25 +38,19 @@ export default {
 
 <template>
   <div class="row">
-    <div class="col-md-6" v-for="item in products" :key="item.id">
-      <div class="card border-0 mb-4 position-relative position-relative">
-        <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }">
-          <img :src="item.imageUrl" class="card-img-top rounded-0" alt="..." />
+    <div class="col-md-4" v-for="item in products" :key="item.id">
+      <div class="card border-0 mb-4 position-relative">
+        <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }" class="pic">
+          <img :src="item.imageUrl" class="card-img-top rounded-0 img-fluid" alt="..." />
         </router-link>
         <a href="#" class="text-dark">
-          <i
-            class="fas fa-heart position-absolute"
-            style="right: 16px; top: 16px"
-          ></i>
+          <i class="fas fa-heart position-absolute" style="right: 16px; top: 16px"></i>
         </a>
         <div class="card-body p-0">
-          <h4 class="mb-0 mt-3">
-            <router-link
-              :to="{ name: 'ProductDetail', params: { id: item.id } }"
-              >{{ item.title }}</router-link
-            >
+          <h5 class="mb-0 mt-3">
+            <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }">{{ item.title }}</router-link>
             <!-- <a href="./detail.html">{{ item.title }}</a> -->
-          </h4>
+          </h5>
           <p class="card-text mb-0">
             NT${{ item.price }}
             <span class="text-muted"
@@ -145,12 +139,12 @@ export default {
 
 <style lang="scss" scoped>
 .prodsTable {
-  height: calc(100vh - 130px);
-  max-height: calc(100vh - 130px);
   overflow: auto;
+  max-height: calc(100vh - 130px);
+  height: calc(100vh - 130px);
   table {
-    vertical-align: middle;
     max-height: 300px;
+    vertical-align: middle;
   }
   img {
     max-width: 100%;

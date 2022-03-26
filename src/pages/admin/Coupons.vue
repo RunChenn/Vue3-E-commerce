@@ -120,6 +120,8 @@ export default {
 
         alert(res.message);
 
+        getCoupons();
+
         isLoading.value = false;
 
         couponModal.value.hide();
@@ -169,15 +171,7 @@ export default {
     <div class="row py-1">
       <div class="col-12 col-sm-12">
         <div class="text-end mb-3">
-          <button
-            type="button"
-            class="btn btn-success"
-            @click="openCouponModal('new')"
-            data-bs-toggle="modal"
-            data-bs-target="#couponModal"
-          >
-            建立新的優惠券
-          </button>
+          <button type="button" class="btn btn-success" @click="openCouponModal('new')" data-bs-toggle="modal" data-bs-target="#couponModal">建立新的優惠券</button>
         </div>
         <table class="table table-hover mt-4">
           <thead>
@@ -195,31 +189,13 @@ export default {
               <td>{{ item.percent }}%</td>
               <td>{{ $filters.date(item.due_date) }}</td>
               <td>
-                <span v-if="item.is_enabled === 1" class="text-success"
-                  >啟用</span
-                >
+                <span v-if="item.is_enabled === 1" class="text-success">啟用</span>
                 <span v-else class="text-muted">未啟用</span>
               </td>
               <td>
                 <div class="btn-group">
-                  <button
-                    class="btn btn-outline-primary btn-sm"
-                    type="button"
-                    data-bs-target="#couponModal"
-                    data-bs-toggle="modal"
-                    @click="openCouponModal('edit', item)"
-                  >
-                    編輯
-                  </button>
-                  <button
-                    class="btn btn-outline-danger btn-sm"
-                    type="button"
-                    data-bs-target="#delModal"
-                    data-bs-toggle="modal"
-                    @click="openCouponModal('delete', item)"
-                  >
-                    刪除
-                  </button>
+                  <button class="btn btn-outline-primary btn-sm" type="button" data-bs-target="#couponModal" data-bs-toggle="modal" @click="openCouponModal('edit', item)">編輯</button>
+                  <button class="btn btn-outline-danger btn-sm" type="button" data-bs-target="#delModal" data-bs-toggle="modal" @click="openCouponModal('delete', item)">刪除</button>
                 </div>
               </td>
             </tr>
@@ -230,12 +206,7 @@ export default {
     <!-- <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination> -->
     <Pagination v-model:pages="pagination" @update-pages="getCoupons" />
 
-    <CouponModal
-      v-model:coupon="tempCoupon"
-      v-model:is-new="isNew"
-      ref="couponModal"
-      @update-coupon="updateCoupon"
-    />
+    <CouponModal v-model:coupon="tempCoupon" v-model:is-new="isNew" ref="couponModal" @update-coupon="updateCoupon" />
 
     <DelModal v-model:item="tempCoupon" ref="delModal" @del-item="delCoupon" />
   </div>

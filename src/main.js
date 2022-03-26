@@ -14,13 +14,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 // import 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 
-import SwiperCore, {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-  Autoplay,
-} from 'swiper';
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper';
 import 'swiper/css';
 
 import '@fortawesome/fontawesome-svg-core';

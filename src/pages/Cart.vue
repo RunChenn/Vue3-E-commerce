@@ -4,18 +4,24 @@ import api from '../api/index.js';
 
 import Carts from '../components/Carts.vue';
 import Form from '../components/Form.vue';
+import RelatedProds from '../components/RelatedProds.vue';
 
 export default {
-  components: { Carts, Form },
+  components: { Carts, Form, RelatedProds },
   name: 'Products',
   setup() {
     const isLoading = ref(false);
 
     const cart = ref({});
 
+    const codeText = ref('');
+
     const loadingStatus = reactive({
       loadingItem: '',
     });
+
+    const isHaveCoupon = ref(false);
+    const couponTotal = ref(0);
 
     onMounted(async () => {
       isLoading.value = true;
@@ -29,6 +35,8 @@ export default {
         const res = await api.cart.getCart();
 
         cart.value = res.data;
+
+        console.log(cart.value);
         isLoading.value = false;
       } catch (err) {
         alert(err.message);
@@ -107,6 +115,34 @@ export default {
       }
     };
 
+    // 新增 優惠券
+    const addConpon = async () => {
+      try {
+        loadingStatus.loadingItem = codeText.value !== '';
+
+        console.log(codeText.value);
+
+        const code = {
+          code: codeText.value,
+        };
+
+        const res = await api.coupon.addConpon({ data: code });
+
+        isHaveCoupon.value = true;
+
+        // res.data.final_total
+
+        console.log(res);
+
+        alert(res.message);
+        loadingStatus.loadingItem = '';
+        getCart();
+      } catch (err) {
+        loadingStatus.loadingItem = '';
+        alert(err.message);
+      }
+    };
+
     const createOrder = async (order) => {
       isLoading.value = true;
 
@@ -134,6 +170,10 @@ export default {
       removeCartAll,
       updateCart,
       createOrder,
+      codeText,
+      addConpon,
+      isHaveCoupon,
+      couponTotal,
     };
   },
 };
@@ -141,18 +181,67 @@ export default {
 
 <template>
   <div class="container">
+    <!-- Loading -->
+    <Loading v-model:active="isLoading" :is-full-page="true" />
+
+    <div class="mt-3">
+      <h3 class="mt-3 mb-4"><i class="fas fa-shopping-cart"></i>&nbsp;購物車</h3>
+      <div class="row">
+        <div class="col-md-8">
+          <Carts v-model:cart="cart" v-model:loadingStatus="loadingStatus" @remove-cart-item="removeCartItem" @remove-cart-all="removeCartAll" @update-cart="updateCart" />
+          <div class="input-group w-50 mb-3">
+            <input type="text" class="form-control rounded-0 border-bottom border-top-0 border-start-0 border-end-0 shadow-none" placeholder="輸入優惠券" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="codeText" />
+            <div class="input-group-append">
+              <button class="btn btn-outline-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-0" type="button" id="button-addon2" :disabled="loadingStatus.loadingItem === (codeText !== '') || codeText === ''" @click="addConpon">
+                <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === (codeText !== '')"></i>
+                <i class="fas fa-paper-plane" v-else></i>
+              </button>
+            </div>
+          </div>
+          <!-- <div class="input-group mb-3 ml-auto">
+                    <input type="text" class="form-control" placeholder="輸入優惠券" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                    <button class="btn btn-outline-dark border-bottom border-top border-start border-end rounded-0" type="button" id="button-addon2">
+                      套用
+                    </button>
+                  </div> -->
+        </div>
+        <div class="col-md-4">
+          <div class="border p-4 mb-4">
+            <h4 class="fw-bold mb-4">訂單資訊</h4>
+            <table class="table text-muted border-bottom">
+              <tbody>
+                <tr>
+                  <th scope="row" class="border-0 px-0 pt-4 font-weight-normal">小計</th>
+                  <td class="text-end border-0 px-0 pt-4">NT${{ cart.total }}</td>
+                </tr>
+                <tr v-if="isHaveCoupon">
+                  <th scope="row" class="border-0 px-0 pt-0 pb-4 font-weight-normal">優惠券</th>
+                  <td class="text-end border-0 px-0 pt-0 pb-4">{{ cart.carts.coupon.percent }}%</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="d-flex justify-content-between mt-4">
+              <p class="mb-0 h4 fw-bold">總金額</p>
+              <p class="mb-0 h4 fw-bold">NT${{ cart.final_total }}</p>
+            </div>
+            <a href="./checkout.html" class="btn btn-dark w-100 mt-4">前往結帳</a>
+          </div>
+        </div>
+      </div>
+      <div class="my-5">
+        <h3 class="fw-bold">相關產品</h3>
+        <RelatedProds />
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
     <div class="mt-4">
       <!-- Loading -->
       <Loading v-model:active="isLoading" :is-full-page="true" />
 
       <!-- 購物車列表 -->
-      <Carts
-        v-model:cart="cart"
-        v-model:loadingStatus="loadingStatus"
-        @remove-cart-item="removeCartItem"
-        @remove-cart-all="removeCartAll"
-        @update-cart="updateCart"
-      />
+      <Carts v-model:cart="cart" v-model:loadingStatus="loadingStatus" @remove-cart-item="removeCartItem" @remove-cart-all="removeCartAll" @update-cart="updateCart" />
     </div>
     <div class="my-5 row justify-content-center">
       <!-- 表單 -->
