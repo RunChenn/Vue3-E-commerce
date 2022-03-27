@@ -22,7 +22,12 @@ export default {
   },
   setup(props) {
     console.log(props.cart);
-    return {};
+
+    const minusProd = () => {};
+
+    return {
+      minusProd,
+    };
   },
 };
 </script>
@@ -32,7 +37,7 @@ export default {
     <thead>
       <tr>
         <th>品名</th>
-        <th>數量</th>
+        <th class="text-center">數量</th>
         <th>單價</th>
         <th scope="col" class="border-0"></th>
       </tr>
@@ -45,25 +50,30 @@ export default {
             <p class="mb-0 fw-bold ms-3 d-inline-block">
               {{ item.product.title }}
             </p>
-            <div class="text-success" v-if="item.coupon">已套用優惠券</div>
+            <!-- <div class="text-success" v-if="item.coupon">已套用優惠券</div> -->
           </th>
-          <td class="border-0 align-middle" style="max-width: 160px">
+          <td class="border-0 align-middle text-center" style="max-width: 160px">
             <div class="input-group pe-5">
               <div class="input-group-prepend">
-                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon1">
+                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon1" @click="item.qty--" :disabled="item.qty === 1">
+                  <!-- @click="$emit('minus-prod', item.id)" -->
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
-              <input type="text" class="form-control border-0 text-center my-auto shadow-none" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" :value="item.qty" />
+              <input type="text" class="form-control border-0 text-center my-auto shadow-none qtyInput" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" disabled v-model="item.qty" />
               <div class="input-group-append">
-                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon2">
+                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon2" @click="item.qty++">
                   <i class="fas fa-plus"></i>
                 </button>
               </div>
             </div>
           </td>
-          <td class="border-0 align-middle">
+          <!-- <td class="border-0 align-middle">
             <p class="mb-0 ms-auto">{{ item.qty }} / {{ item.product.unit }}</p>
+            
+          </td> -->
+          <td class="text-end">
+            {{ item.product.price }}
           </td>
 
           <td class="border-0 align-middle">
@@ -150,4 +160,9 @@ export default {
   </div> -->
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.qtyInput.form-control:disabled,
+.form-control {
+  background-color: #fff;
+}
+</style>

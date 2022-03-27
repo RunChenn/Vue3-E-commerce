@@ -23,6 +23,8 @@ export default {
     const isHaveCoupon = ref(false);
     const couponTotal = ref(0);
 
+    const codeMsg = ref('');
+
     onMounted(async () => {
       isLoading.value = true;
 
@@ -129,10 +131,16 @@ export default {
         const res = await api.coupon.addConpon({ data: code });
 
         isHaveCoupon.value = true;
+        codeText.value = '';
 
         // res.data.final_total
 
         console.log(res);
+        console.log(cart.value);
+
+        codeMsg.value = res.message.split(':')[1];
+
+        console.log(codeMsg.value);
 
         alert(res.message);
         loadingStatus.loadingItem = '';
@@ -174,6 +182,7 @@ export default {
       addConpon,
       isHaveCoupon,
       couponTotal,
+      codeMsg,
     };
   },
 };
@@ -189,15 +198,23 @@ export default {
       <div class="row">
         <div class="col-md-8">
           <Carts v-model:cart="cart" v-model:loadingStatus="loadingStatus" @remove-cart-item="removeCartItem" @remove-cart-all="removeCartAll" @update-cart="updateCart" />
-          <div class="input-group w-50 mb-3">
-            <input type="text" class="form-control rounded-0 border-bottom border-top-0 border-start-0 border-end-0 shadow-none" placeholder="輸入優惠券" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="codeText" />
-            <div class="input-group-append">
-              <button class="btn btn-outline-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-0" type="button" id="button-addon2" :disabled="loadingStatus.loadingItem === (codeText !== '') || codeText === ''" @click="addConpon">
-                <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === (codeText !== '')"></i>
-                <i class="fas fa-paper-plane" v-else></i>
-              </button>
+          <div class="row justify-content-between">
+            <div class="col-auto">
+              <button class="btn btn-outline-primary" type="button" @click="removeCartAll" :disabled="cart.carts && cart.carts.length === 0">清空購物車</button>
+            </div>
+            <div class="col-auto">
+              <div class="input-group w-100 mb-3">
+                <input type="text" class="form-control rounded-0 border-bottom border-top-0 border-start-0 border-end-0 shadow-none" placeholder="輸入優惠券" aria-label="Recipient's username" aria-describedby="button-addon2" v-model="codeText" />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-dark border-bottom border-top-0 border-start-0 border-end-0 rounded-0" type="button" id="button-addon2" :disabled="loadingStatus.loadingItem === (codeText !== '') || codeText === ''" @click="addConpon">
+                    <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === isHaveCoupon"></i>
+                    <i class="fas fa-paper-plane" v-else></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
+
           <!-- <div class="input-group mb-3 ml-auto">
                     <input type="text" class="form-control" placeholder="輸入優惠券" aria-label="Recipient's username" aria-describedby="button-addon2" />
                     <button class="btn btn-outline-dark border-bottom border-top border-start border-end rounded-0" type="button" id="button-addon2">
@@ -216,7 +233,7 @@ export default {
                 </tr>
                 <tr v-if="isHaveCoupon">
                   <th scope="row" class="border-0 px-0 pt-0 pb-4 font-weight-normal">優惠券</th>
-                  <td class="text-end border-0 px-0 pt-0 pb-4">{{ cart.carts.coupon.percent }}%</td>
+                  <td class="text-end border-0 px-0 pt-0 pb-4">{{ codeMsg }}</td>
                 </tr>
               </tbody>
             </table>
@@ -224,7 +241,8 @@ export default {
               <p class="mb-0 h4 fw-bold">總金額</p>
               <p class="mb-0 h4 fw-bold">NT${{ cart.final_total }}</p>
             </div>
-            <a href="./checkout.html" class="btn btn-dark w-100 mt-4">前往結帳</a>
+            <!-- <a href="./checkout.html" class="btn btn-dark w-100 mt-4">前往結帳</a> -->
+            <router-link class="btn btn-dark w-100 mt-4" to="/checkout" v-if="cart.carts && cart.carts.length !== 0">前往結帳</router-link>
           </div>
         </div>
       </div>
@@ -232,20 +250,6 @@ export default {
         <h3 class="fw-bold">相關產品</h3>
         <RelatedProds />
       </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="mt-4">
-      <!-- Loading -->
-      <Loading v-model:active="isLoading" :is-full-page="true" />
-
-      <!-- 購物車列表 -->
-      <Carts v-model:cart="cart" v-model:loadingStatus="loadingStatus" @remove-cart-item="removeCartItem" @remove-cart-all="removeCartAll" @update-cart="updateCart" />
-    </div>
-    <div class="my-5 row justify-content-center">
-      <!-- 表單 -->
-      <Form @create-order="createOrder" v-model:cart="cart" />
     </div>
   </div>
 </template>

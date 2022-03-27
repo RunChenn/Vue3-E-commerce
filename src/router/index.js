@@ -96,6 +96,15 @@ const routes = [
           requiresAuth: false,
         },
       },
+      {
+        path: '/checkout',
+        name: '結帳',
+        component: () => import('../pages/Checkout.vue'),
+        meta: {
+          title: '結帳',
+          requiresAuth: false,
+        },
+      },
     ],
   },
   {
