@@ -1,5 +1,6 @@
 <script>
 import { ref, reactive, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import api from '../api/index.js';
 
 import Carts from '../components/Carts.vue';
@@ -10,18 +11,16 @@ export default {
   components: { Carts, Form, RelatedProds },
   name: 'Checkout',
   setup() {
+    const router = useRouter();
     const isLoading = ref(false);
 
     const cart = ref({});
-
-    const codeText = ref('');
 
     const loadingStatus = reactive({
       loadingItem: '',
     });
 
     const isHaveCoupon = ref(false);
-    const couponTotal = ref(0);
 
     const codeMsg = ref('');
 
@@ -39,6 +38,12 @@ export default {
         cart.value = res.data;
 
         console.log(cart.value);
+
+        if (cart.value.carts[0].coupon) {
+          isHaveCoupon.value = true;
+          codeMsg.value = cart.value.carts[0].coupon.code;
+        }
+
         isLoading.value = false;
       } catch (err) {
         alert(err.message);
@@ -52,9 +57,12 @@ export default {
       try {
         const res = await api.order.addOrder({ data: order });
 
-        alert(res.message);
+        // alert(res.message);
+        console.log(res);
 
-        getCart();
+        router.push({ name: 'checkout-success', params: { id: res.orderId } });
+
+        // getCart();
         isLoading.value = false;
       } catch (err) {
         loadingStatus.loadingItem = '';
@@ -69,6 +77,8 @@ export default {
       loadingStatus,
       getCart,
       createOrder,
+      isHaveCoupon,
+      codeMsg,
     };
   },
 };
@@ -80,8 +90,7 @@ export default {
     <Loading v-model:active="isLoading" :is-full-page="true" />
 
     <div class="mt-3">
-      <!-- <h3 class="mt-3 mb-4"><i class="fas fa-shopping-cart"></i>&nbsp;購物車</h3> -->
-      <div class="row justify-content-center mb-5">
+      <!-- <div class="row justify-content-center mb-5">
         <div class="col-md-12">
           <h3 class="fw-bold mb-4 pt-3"><i class="fas fa-shopping-bag"></i>&nbsp;確認訂單</h3>
         </div>
@@ -98,11 +107,11 @@ export default {
             <li><i class="fas fa-dot-circle d-md-inline d-block text-center"></i> <span class="text-nowrap">完成訂單</span></li>
           </ul>
         </div>
-      </div>
+      </div> -->
       <div class="row flex-row-reverse justify-content-center pb-5">
         <div class="col-md-6" v-if="cart.carts">
-          <div class="border p-4 mb-4" v-for="item in cart.carts" :key="item.id">
-            <div class="d-flex">
+          <div class="border p-4 mb-4">
+            <div class="d-flex" v-for="item in cart.carts" :key="item.id">
               <img src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80" alt="" class="me-2" style="width: 48px; height: 48px; object-fit: cover" />
               <div class="w-100">
                 <div class="d-flex justify-content-between">

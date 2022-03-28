@@ -151,23 +151,6 @@ export default {
       }
     };
 
-    const createOrder = async (order) => {
-      isLoading.value = true;
-
-      try {
-        const res = await api.order.addOrder({ data: order });
-
-        alert(res.message);
-
-        getCart();
-        isLoading.value = false;
-      } catch (err) {
-        loadingStatus.loadingItem = '';
-        isLoading.value = false;
-        alert(err.message);
-      }
-    };
-
     return {
       isLoading,
       cart,
@@ -177,7 +160,6 @@ export default {
       removeCartItem,
       removeCartAll,
       updateCart,
-      createOrder,
       codeText,
       addConpon,
       isHaveCoupon,
@@ -195,7 +177,7 @@ export default {
 
     <div class="mt-3">
       <h3 class="mt-3 mb-4"><i class="fas fa-shopping-cart"></i>&nbsp;購物車</h3>
-      <div class="row">
+      <div class="row" v-if="cart.carts && cart.carts.length !== 0">
         <div class="col-md-8">
           <Carts v-model:cart="cart" v-model:loadingStatus="loadingStatus" @remove-cart-item="removeCartItem" @remove-cart-all="removeCartAll" @update-cart="updateCart" />
           <div class="row justify-content-between">
@@ -246,6 +228,14 @@ export default {
           </div>
         </div>
       </div>
+      <div class="row" v-else>
+        <div class="border p-4 mb-4">
+          <h4 class="fw-bold mt-3 mb-4">購物車目前沒有商品</h4>
+          <!-- <a href="./checkout.html" class="btn btn-dark w-100 mt-4">前往結帳</a> -->
+          <router-link class="btn btn-primary" to="/products">繼續購物</router-link>
+        </div>
+      </div>
+
       <div class="my-5">
         <h3 class="fw-bold">相關產品</h3>
         <RelatedProds />

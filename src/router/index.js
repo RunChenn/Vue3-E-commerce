@@ -89,7 +89,7 @@ const routes = [
       },
       {
         path: '/cart',
-        name: '購物車',
+        name: 'cart',
         component: () => import('../pages/Cart.vue'),
         meta: {
           title: '購物車',
@@ -98,10 +98,19 @@ const routes = [
       },
       {
         path: '/checkout',
-        name: '結帳',
+        name: 'checkout',
         component: () => import('../pages/Checkout.vue'),
         meta: {
           title: '結帳',
+          requiresAuth: false,
+        },
+      },
+      {
+        path: '/checkout-success/:id',
+        name: 'checkout-success',
+        component: () => import('../pages/CheckoutSuccess.vue'),
+        meta: {
+          title: '完成訂單',
           requiresAuth: false,
         },
       },

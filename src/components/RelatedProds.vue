@@ -68,7 +68,9 @@ export default {
           <!-- <img style="width: 100%; height: 200px" :src="banner" alt="" /> -->
           <div class="card border-0 mb-4 position-relative">
             <div class="pic">
-              <img class="card-img-top rounded-0" :src="item.imageUrl" alt="" :height="380" />
+              <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }" class="pic">
+                <img class="card-img-top rounded-0" :src="item.imageUrl" alt="" :height="380" />
+              </router-link>
             </div>
             <a href="#" class="text-dark"> </a>
             <div class="card-body p-0">

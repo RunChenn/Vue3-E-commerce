@@ -1,6 +1,6 @@
 <script>
 import api from '../api/index.js';
-import { ref, reactive, onMounted } from 'vue';
+import { getCurrentInstance, ref, reactive, onMounted, watch, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import RelatedProds from '../components/RelatedProds.vue';
@@ -9,6 +9,8 @@ export default {
   components: { Breadcrumb, RelatedProds },
   name: 'Home',
   setup() {
+    let { proxy } = getCurrentInstance();
+
     const isLoading = ref(false);
 
     const product = ref({});
@@ -24,10 +26,46 @@ export default {
     onMounted(async () => {
       isLoading.value = true;
 
+      window.addEventListener('scroll', handleScroll());
+
       const id = route.params.id;
 
       getProduct(id);
     });
+
+    onUnmounted(() => {
+      document.removeEventListener('scroll', handleScroll());
+    });
+
+    // watch 監聽路由發生變化
+    watch(
+      () => route.fullPath,
+      async (newVal) => {
+        // 確保路由還在當前頁
+        if (route.name === 'ProductDetail') {
+          const id = route.params.id;
+
+          getProduct(id);
+
+          goTop();
+        }
+      }
+    );
+
+    const handleScroll = () => {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      proxy.scrollTop = scrollTop;
+    };
+
+    const goTop = () => {
+      let timer = setInterval(() => {
+        let ispeed = Math.floor(-proxy.scrollTop / 10);
+        document.documentElement.scrollTop = document.body.scrollTop = proxy.scrollTop + ispeed;
+        if (proxy.scrollTop === 0) {
+          clearInterval(timer);
+        }
+      }, 10);
+    };
 
     // 載入單一商品
     const getProduct = async (id) => {
@@ -117,13 +155,13 @@ export default {
           <div class="col-6">
             <div class="input-group my-3 bg-light rounded">
               <div class="input-group-prepend">
-                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon1">
+                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon1" @click="qty--" :disabled="qty === 1">
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
-              <input type="text" class="form-control border-0 text-center my-auto shadow-none bg-light" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" v-model="qty" />
+              <input type="text" class="form-control border-0 text-center my-auto shadow-none bg-light" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" disabled v-model="qty" />
               <div class="input-group-append">
-                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon2">
+                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon2" @click="qty++">
                   <i class="fas fa-plus"></i>
                 </button>
               </div>
@@ -150,7 +188,7 @@ export default {
         </ul>
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade py-3 px-3 show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <h3 class="fw-bold mt-4">Lorem ipsum dolor sit amet</h3>
+            <!-- <h3 class="fw-bold mt-4">Lorem ipsum dolor sit amet</h3> -->
             <div class="mt-4 mb-5">
               <img v-for="(img, index) in product.imagesUrl" :key="img" :src="img" class="rounded-0 d-block mx-auto mb-3 tabProdsImg" alt="商品圖片" />
             </div>

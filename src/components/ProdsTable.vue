@@ -43,9 +43,9 @@ export default {
         <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }" class="pic">
           <img :src="item.imageUrl" class="card-img-top rounded-0 img-fluid" alt="..." />
         </router-link>
-        <a href="#" class="text-dark">
+        <!-- <a href="#" class="text-dark">
           <i class="fas fa-heart position-absolute" style="right: 16px; top: 16px"></i>
-        </a>
+        </a> -->
         <div class="card-body p-0">
           <h5 class="mb-0 mt-3">
             <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }">{{ item.title }}</router-link>

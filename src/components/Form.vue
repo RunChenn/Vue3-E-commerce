@@ -95,7 +95,7 @@ export default {
     </div>
     <div class="d-flex flex-column-reverse flex-md-row mt-4 justify-content-between align-items-md-center align-items-end w-100">
       <router-link class="text-dark mt-md-0 mt-3" to="/cart" v-if="cart.carts && cart.carts.length !== 0"><i class="fas fa-chevron-left me-2"></i>返回購物車</router-link>
-      <router-link to="/cart" class="btn btn-dark">送出訂單</router-link>
+      <button type="submit" class="btn btn-primary">送出訂單</button>
     </div>
   </form>
 </template>
