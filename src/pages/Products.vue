@@ -67,16 +67,27 @@ export default {
       }
     };
 
-    // 取得 購物車商品
-    // const getCart = async () => {
-    //   try {
-    //     const res = await api.cart.getCart();
+    // 加入購物車
+    const addToCart = async (id) => {
+      try {
+        loadingStatus.loadingItem = id;
 
-    //     cart.value = res.data;
-    //   } catch (err) {
-    //     alert(err.message);
-    //   }
-    // };
+        const cart = {
+          product_id: id,
+          qty: qty.value,
+        };
+
+        const res = await api.cart.addCart({ data: cart });
+
+        alert(res.message);
+
+        loadingStatus.loadingItem = '';
+
+        // getCart();
+      } catch (err) {
+        alert(err.message);
+      }
+    };
 
     const toDetail = async (row) => {
       router.push({ path: `/apps-list/members/detail/${row._id}` });
@@ -93,7 +104,7 @@ export default {
       loadingStatus,
       getProducts,
       // getCart,
-      // addToCart,
+      addToCart,
       toDetail,
     };
   },
