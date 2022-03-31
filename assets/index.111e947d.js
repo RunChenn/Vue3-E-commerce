@@ -1,0 +1,11 @@
+import{u as _,v as m,r as c,o as p,b,w as a,e as t,B as s,d as o,x as g,C as i}from"./vendor.1eeb228f.js";import{a as k}from"./index.06ff196c.js";import{_ as f}from"./Logo.52fb4647.js";import{_ as h}from"./index.fa9b4643.js";const x={name:"admin",setup(){const l=_();return{checkSuccess:m(!1),signout:async()=>{try{await k.auth.logout(),l.push({name:"Login"})}catch(n){alert(n.message)}}}}},w={class:"navbar navbar-expand-lg navbar-dark bg-primary px-5"},N={class:"container-fluid"},y=a("img",{src:f,class:"card-img-top d-inline-block align-text-top",alt:"Logo",width:"40",height:"40"},null,-1),j=a("span",{class:"logo-text text-white"},"NAVIGANT",-1),A=a("button",{class:"navbar-toggler",type:"button","data-bs-toggle":"collapse","data-bs-target":"#navbarNavAltMarkup","aria-controls":"navbarNavAltMarkup","aria-expanded":"false","aria-label":"Toggle navigation"},[a("span",{class:"navbar-toggler-icon"})],-1),C={class:"collapse navbar-collapse justify-content-end",id:"navbarNavAltMarkup"},V={class:"navbar-nav"},B=i("\u7522\u54C1"),M=i("\u8A02\u55AE"),L=i("\u512A\u60E0\u5238"),T={class:"container-fluid mt-3 position-relative"};function I(l,r,d,n,S,$){const e=c("router-link"),u=c("router-view");return p(),b("div",null,[a("nav",w,[a("div",N,[t(e,{to:{name:"Index"},class:"navbar-brand"},{default:s(()=>[y]),_:1}),j,o(' <a class="navbar-brand" href="./index.html">Navbar</a> '),A,a("div",C,[a("div",V,[t(e,{to:"/admin/products",class:"nav-item nav-link me-4"},{default:s(()=>[B]),_:1}),t(e,{to:"/admin/orders",class:"nav-item nav-link me-4"},{default:s(()=>[M]),_:1}),t(e,{to:"/admin/coupons",class:"nav-item nav-link me-4"},{default:s(()=>[L]),_:1}),o(' <router-link to="/admin/article" class="nav-link">\u8CBC\u6587</router-link> '),o(` <button
+            @click="logout"
+            class="nav-link text-white btn-link bg-primary"
+          >
+            \u767B\u51FA
+          </button> `),a("a",{href:"#",onClick:r[0]||(r[0]=g((...v)=>n.signout&&n.signout(...v),["prevent"])),class:"nav-link"},"\u767B\u51FA")]),o(` <div class="navbar-nav ms-auto">
+          <router-link to="/" class="nav-link text-white">\u524D\u53F0\u9801\u9762</router-link>
+          <router-link to="/cart" class="nav-link text-white"
+            >\u8CFC\u7269\u8ECA</router-link
+          >
+        </div> `)])])]),a("div",T,[t(u)])])}var z=h(x,[["render",I]]);export{z as default};
