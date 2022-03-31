@@ -2,8 +2,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import api from '../api/index.js';
 
-import { Modal } from 'bootstrap';
-
+import Breadcrumb from '../components/Breadcrumb.vue';
 import ProdsTable from '../components/ProdsTable.vue';
 import Pagination from '../components/Pagination.vue';
 import Carts from '../components/Carts.vue';
@@ -12,11 +11,10 @@ import ProdModal from '../components/ProdModal.vue';
 import Carousel from '../components/Carousel.vue';
 
 export default {
-  components: { Carousel, ProdModal, ProdsTable, Pagination, Carts, Form },
+  components: { Carousel, Breadcrumb, ProdModal, ProdsTable, Pagination, Carts, Form },
   name: 'Products',
   setup() {
     const isLoading = ref(false);
-    // const fullPage = ref(true);
 
     const pagination = ref({});
 
@@ -25,8 +23,6 @@ export default {
 
     const cart = ref({});
 
-    const productModal = ref(null);
-
     const loadingStatus = reactive({
       loadingItem: '',
     });
@@ -34,21 +30,13 @@ export default {
     onMounted(async () => {
       isLoading.value = true;
 
-      // productModal.value = new Modal(document.getElementById('productModal'), {
-      //   keyboard: false,
-      // });
-
       getProducts();
     });
 
     // 載入所有商品
     const getProducts = async (page = 1) => {
       try {
-        // const prodsData = await api.products.getProductsAll();
         const prodsData = await api.products.getProducts(page);
-
-        console.log(prodsData);
-        console.log(prodsData.products);
 
         const data = prodsData.products;
         pagination.value = prodsData.pagination;
@@ -56,8 +44,6 @@ export default {
         let categoryList = data.map((ele) => ele.category);
 
         categorys.value = [...new Set(categoryList)];
-
-        console.log(categorys.value);
 
         products.value = data;
         isLoading.value = false;
@@ -82,8 +68,6 @@ export default {
         alert(res.message);
 
         loadingStatus.loadingItem = '';
-
-        // getCart();
       } catch (err) {
         alert(err.message);
       }
@@ -94,16 +78,13 @@ export default {
     };
 
     return {
-      // ...toRefs(form),
       isLoading,
-      // fullPage,
       products,
       pagination,
       categorys,
       cart,
       loadingStatus,
       getProducts,
-      // getCart,
       addToCart,
       toDetail,
     };
@@ -112,25 +93,12 @@ export default {
 </script>
 
 <template>
-  <!-- <div class="position-relative d-flex align-items-center justify-content-center mb-5" style="min-height: 400px">
-    <div
-      class="position-absolute"
-      style="
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-image: url(https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1648265496572.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=MRRLCqL%2BVKcW2P9yKj9QRvv6vP%2B31cDGBDh6P81LFSxJqybHMYDlF%2FZDbGciNeT6HxHAzeeceG5WqNWdXt1%2FcUyNvzPL0DtxiJph9SUXLeej4ME7JASFYun2Dj8oQheYbNEXDosL7PfeU6L7rVmayIRq0%2FvjFUD4RTG%2BXHkXoA2iXejQJEIevVs7O%2BbUm63fHJufqZK9%2FfPSUMdv%2FT4WxCzIT82P8urFxZwfER142CBC4vO5UEgGDGKB6NQ%2B%2Fnqjpdlkfb4q9QOjYyVaw542G9B6ckSvlf%2B53%2B2pr8VtzqcwsHRE%2FMs0ZOw7AVRejw9T3T2IQBIPEp4ORzRg4Z1xUw%3D%3D);
-        background-position: center center;
-        opacity: 0.1;
-      "
-    ></div>
-    <h2 class="fw-bold">NAVIGANT</h2>
-  </div> -->
-  <div class="container mb-5">
+  <div class="container pt-4 mb-5">
+    <!-- Loading -->
+    <Loading v-model:active="isLoading" :is-full-page="true" />
     <Carousel />
     <div class="row mt-3">
-      <div class="col-md-3">
+      <!-- <div class="col-md-3">
         <div class="accordion border border-bottom border-top-0 border-start-0 border-end-0 mb-3" id="accordionExample">
           <div class="card border-0" v-for="category in categorys" :key="category">
             <div class="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0" id="headingOne" data-bs-toggle="collapse" data-bs-target="#collapseOne">
@@ -145,25 +113,16 @@ export default {
                   <li>
                     <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
                   </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
+      </div> -->
+      <div class="col-md-12">
+        <Breadcrumb />
       </div>
-      <div class="col-md-9">
+      <div class="col-md-12">
         <!-- 產品列表 -->
         <ProdsTable v-model:products="products" v-model:loadingStatus="loadingStatus" @get-product="getProducts" @add-to-cart="addToCart" />
 

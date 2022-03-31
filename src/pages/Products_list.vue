@@ -115,16 +115,11 @@ export default {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container pt-4">
     <div class="row py-1">
       <div class="mt-4">
         <!-- 產品列表 -->
-        <ProdsTable
-          v-model:products="products"
-          v-model:loadingStatus="loadingStatus"
-          @get-product="getProduct"
-          @add-to-cart="addToCart"
-        />
+        <ProdsTable v-model:products="products" v-model:loadingStatus="loadingStatus" @get-product="getProduct" @add-to-cart="addToCart" />
         <!-- @get-cart="getCart" -->
       </div>
     </div>
@@ -133,11 +128,7 @@ export default {
     <Loading v-model:active="isLoading" :is-full-page="true" />
 
     <!-- Modal -->
-    <ProdModal
-      v-model:product="product"
-      @add-to-cart="addToCart"
-      v-model:loadingStatus="loadingStatus"
-    />
+    <ProdModal v-model:product="product" @add-to-cart="addToCart" v-model:loadingStatus="loadingStatus" />
     />
   </div>
 </template>

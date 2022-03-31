@@ -1,8 +1,6 @@
 <script>
 import { toRefs, reactive, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import api from '../api/index.js';
-
 export default {
   name: 'admin',
   setup() {
@@ -10,8 +8,6 @@ export default {
     const state = reactive({
       list: [],
     });
-
-    // console.log(route.matched);
 
     // onMounted
     onMounted(() => {
@@ -41,10 +37,7 @@ export default {
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item" v-for="(item, index) in list" :class="{ active: index === 2 ? true : false }" :key="item.meta.title">
-        <!-- <a> -->
         <router-link :to="{ path: item.path }">{{ item.meta.title }}</router-link>
-        <!-- </a> -->
-        <!-- <a href="#">Home</a> -->
       </li>
     </ol>
   </nav>

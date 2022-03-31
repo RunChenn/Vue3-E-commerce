@@ -21,8 +21,6 @@ export default {
     },
   },
   setup(props) {
-    console.log(props.cart);
-
     const minusProd = () => {};
 
     return {
@@ -50,13 +48,11 @@ export default {
             <p class="mb-0 fw-bold ms-3 d-inline-block">
               {{ item.product.title }}
             </p>
-            <!-- <div class="text-success" v-if="item.coupon">已套用優惠券</div> -->
           </th>
           <td class="border-0 align-middle text-center" style="max-width: 160px">
             <div class="input-group pe-5">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon1" @click="item.qty--" :disabled="item.qty === 1">
-                  <!-- @click="$emit('minus-prod', item.id)" -->
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
@@ -68,10 +64,6 @@ export default {
               </div>
             </div>
           </td>
-          <!-- <td class="border-0 align-middle">
-            <p class="mb-0 ms-auto">{{ item.qty }} / {{ item.product.unit }}</p>
-            
-          </td> -->
           <td class="text-end">
             {{ item.product.price }}
           </td>
@@ -80,8 +72,6 @@ export default {
             <button type="button" class="btn btn-sm" @click="$emit('remove-cart-item', item.id)" :disabled="loadingStatus.loadingItem === item.id">
               <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
               <i class="fas fa-times" v-else></i>
-
-              <!-- x -->
             </button>
           </td>
         </tr>

@@ -22,13 +22,6 @@ export default {
       emit('getProduct', id);
     };
 
-    watch(
-      () => props.products,
-      (val) => {
-        console.log(val);
-      }
-    );
-
     return {
       openModal,
     };

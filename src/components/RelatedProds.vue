@@ -24,8 +24,6 @@ export default {
         relatedProd.value = data;
 
         isLoading.value = false;
-
-        console.log(relatedProd.value);
       } catch (err) {
         isLoading.value = false;
         alert(err.message);
@@ -33,6 +31,7 @@ export default {
     };
 
     return {
+      isLoading,
       relatedProd,
     };
   },
@@ -41,6 +40,8 @@ export default {
 
 <template>
   <div class="relatedProds">
+    <!-- Loading -->
+    <Loading v-model:active="isLoading" :is-full-page="true" />
     <div class="mt-4 mb-5">
       <swiper
         class="swiper-container"
@@ -65,7 +66,6 @@ export default {
         }"
       >
         <swiper-slide class="swiper-slide" v-for="(item, index) in relatedProd" :key="index">
-          <!-- <img style="width: 100%; height: 200px" :src="banner" alt="" /> -->
           <div class="card border-0 mb-4 position-relative">
             <div class="pic">
               <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }" class="pic">
@@ -89,9 +89,7 @@ export default {
         </swiper-slide>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>
-        <!--左箭头。如果放置在swiper-container外面，需要自定义样式。-->
         <div class="swiper-button-next"></div>
-        <!--右箭头。如果放置在swiper-container外面，需要自定义样式。-->
       </swiper>
     </div>
   </div>

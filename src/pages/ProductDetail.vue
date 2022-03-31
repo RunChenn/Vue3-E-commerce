@@ -1,7 +1,7 @@
 <script>
 import api from '../api/index.js';
 import { getCurrentInstance, ref, reactive, onMounted, watch, onUnmounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import RelatedProds from '../components/RelatedProds.vue';
 
@@ -72,8 +72,6 @@ export default {
       try {
         const prodsData = await api.products.getProduct(id);
 
-        console.log(prodsData);
-
         product.value = prodsData.product;
         isLoading.value = false;
       } catch (err) {
@@ -97,8 +95,6 @@ export default {
         alert(res.message);
 
         loadingStatus.loadingItem = '';
-
-        // getCart();
       } catch (err) {
         alert(err.message);
       }
@@ -114,7 +110,7 @@ export default {
 </script>
 
 <template>
-  <div class="productDetail">
+  <div class="container pt-4 productDetail">
     <div class="row align-items-center">
       <div class="col-md-6">
         <div id="prodImgControls" class="carousel slide" data-ride="carousel">
@@ -135,17 +131,6 @@ export default {
       </div>
       <div class="col-md-6">
         <Breadcrumb />
-        <!-- <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-white px-0 mb-0 py-3">
-            <li class="breadcrumb-item">
-              <a class="text-muted" href="./index.html">Home</a>
-            </li>
-            <li class="breadcrumb-item">
-              <a class="text-muted" href="./product.html">Product</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Detail</li>
-          </ol>
-        </nav> -->
         <h2 class="fw-bold h1 mb-1">{{ product.title }}</h2>
         <p class="mb-0 text-muted text-end">
           <del>NT${{ product.origin_price }}</del>
@@ -209,22 +194,9 @@ export default {
           </div>
         </div>
 
-        <h3 class="fw-bold">相關產品</h3>
+        <h3 class="fw-bold mt-3">相關產品</h3>
         <RelatedProds />
       </div>
-      <!-- <div class="col-md-4">
-        <p>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua. At vero eos et accusam et
-        </p>
-      </div>
-      <div class="col-md-3">
-        <p class="text-muted">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor
-        </p>
-      </div> -->
     </div>
   </div>
 </template>

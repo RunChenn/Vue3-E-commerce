@@ -1,5 +1,5 @@
 <script>
-import { ref, reactive, onMounted } from 'vue';
+import { reactive } from 'vue';
 import Carousel from '../components/Carousel.vue';
 
 export default {
@@ -39,15 +39,6 @@ export default {
 
 <template>
   <div class="home">
-    <!-- <h1>你現在在前台頁面</h1>
-    <div id="nav">
-      <router-link to="/">首頁</router-link> |
-      <router-link to="/products">前台產品列表</router-link> |
-      <router-link to="/cart">前台購物車</router-link> |
-      <router-link to="/admin/products">後台購物車列表</router-link>
-    </div>
-    <router-view></router-view> -->
-
     <div class="position-relative">
       <div
         class="position-absolute"
@@ -59,39 +50,10 @@ export default {
           background-image: url(https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1648265449862.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=LQZxp16W7KgXS3iq7y3CrN7buiB3WDc4zwXnTfcYPJL0snx2Vo5iY%2FrPna%2BZ%2Bd8B3EAk33lx0PcYNlX2tgtV1Qta8C1QYCMM1rmitHB4a7mmAHc9GDFJwYJ2KCGG1f6c2z8lBVoWptSKbuQPgrgIYPcahxI5Uzec0Po1nRPxEbkX%2FacpXv4UyodhVi%2BBvDx6Tf1wdHWaUEfbzsMOLwvkKPWyLdXiQanw14fii9SgYAyvz88kgfTZL8MJTB5qe3HQATBZBqsQ3iUSjwn87qhW%2BofclZddBvbsF4p%2FZvZTvbAkxnpfk8S6uuzmSyr0BhEc%2BYyNhjsBMjrbCcsugqE6mQ%3D%3D);
           background-position: center center;
           opacity: 0.1;
+          max-height: 100vh;
         "
       ></div>
       <div class="container d-flex flex-column" style="min-height: 100vh">
-        <!-- <nav class="navbar navbar-expand-lg navbar-light">
-          <a class="navbar-brand" href="./index.html">Navbar</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div
-            class="collapse navbar-collapse justify-content-end"
-            id="navbarNavAltMarkup"
-          >
-            <div class="navbar-nav">
-              <router-link class="nav-item nav-link me-4 active" to="/"
-                >首頁</router-link
-              >
-              <router-link class="nav-item nav-link me-4" to="/products"
-                >產品列表</router-link
-              >
-              <router-link class="nav-item nav-link me-4" to="/cart"
-                >購物車</router-link
-              >
-            </div>
-          </div>
-        </nav> -->
         <div class="row justify-content-center my-auto" style="z-index: 100">
           <div class="col-md-4 text-center">
             <h2>Navigant</h2>
@@ -116,42 +78,6 @@ export default {
             </div>
           </div>
         </div>
-        <!-- <div class="col-md-4 mt-md-4">
-          <div class="card border-0 mb-4">
-            <img
-              src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
-              class="card-img-top rounded-0"
-              alt="..."
-            />
-            <div class="card-body text-center">
-              <h4>Lorem ipsum</h4>
-              <div class="d-flex justify-content-between">
-                <p class="card-text text-muted mb-0">
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                  diam nonumy eirmod.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mt-md-4">
-          <div class="card border-0 mb-4">
-            <img
-              src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
-              class="card-img-top rounded-0"
-              alt="..."
-            />
-            <div class="card-body text-center">
-              <h4>Lorem ipsum</h4>
-              <div class="d-flex justify-content-between">
-                <p class="card-text text-muted mb-0">
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                  diam nonumy eirmod.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="bg-light my-5">
@@ -179,57 +105,5 @@ export default {
         </div>
       </div>
     </div>
-    <!-- <div class="bg-light py-4">
-      <div class="container">
-        <div
-          class="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start"
-        >
-          <p class="mb-0 fw-bold">Lorem ipsum dolor sit amet.</p>
-          <div class="input-group w-md-50 mt-md-0 mt-3">
-            <input type="text" class="form-control rounded-0" placeholder="" />
-            <div class="input-group-append">
-              <button class="btn btn-dark rounded-0" type="button" id="search">
-                Lorem ipsum
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="bg-dark py-5">
-      <div class="container">
-        <div
-          class="d-flex align-items-center justify-content-between text-white mb-md-7 mb-4"
-        >
-          <a class="text-white h4" href="./index.html">LOGO</a>
-          <ul class="d-flex list-unstyled mb-0 h4">
-            <li>
-              <a href="#" class="text-white mx-3"
-                ><i class="fab fa-facebook"></i
-              ></a>
-            </li>
-            <li>
-              <a href="#" class="text-white mx-3"
-                ><i class="fab fa-instagram"></i
-              ></a>
-            </li>
-            <li>
-              <a href="#" class="text-white ms-3"
-                ><i class="fab fa-line"></i
-              ></a>
-            </li>
-          </ul>
-        </div>
-        <div
-          class="d-flex flex-column flex-md-row justify-content-between align-items-md-end align-items-start text-white"
-        >
-          <div class="mb-md-0 mb-1">
-            <p class="mb-0">02-3456-7890</p>
-            <p class="mb-0">service@mail.com</p>
-          </div>
-          <p class="mb-0">© 2020 LOGO All Rights Reserved.</p>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>

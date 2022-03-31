@@ -34,22 +34,15 @@ export default {
 
     // 取得 訂單
     const getOrder = async (order_id) => {
-      console.log(order_id);
       try {
         const res = await api.order.getOrder(order_id);
 
         order.value = res.order;
 
-        console.log(res.order);
-
         couponData.value = Object.values(res.order.products)[0].coupon;
 
         userData.value = res.order.user;
 
-        console.log(couponData);
-
-        console.log(res);
-        console.log(order.value);
         isLoading.value = false;
       } catch (err) {
         alert(err.message);
@@ -70,7 +63,7 @@ export default {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container pt-4">
     <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
     <div
@@ -82,15 +75,17 @@ export default {
     ></div>
     <div class="mt-5 mb-5">
       <div class="row">
-        <div class="col-md-12">
-          <!-- <h2>訂單成立</h2>
-          <p>感謝您的購買，收到訂單後，預計3~5天出貨，請您耐心等候。</p>
-          <router-link :to="{ name: 'Index' }" class="btn btn-outline-dark me-2 rounded-0 mb-4">回首頁</router-link> -->
+        <div class="col-md-12 mb-5">
+          <div class="card rounded-0 py-3">
+            <div class="card-header border-bottom-0 bg-white px-4 py-0">
+              <h2>訂單成立</h2>
+              <p>感謝您的購買，收到訂單後，預計3~5天出貨，請您耐心等候。</p>
+              <router-link :to="{ name: 'Home' }" class="btn btn-outline-dark me-2 rounded-0 mb-4">回首頁</router-link>
+            </div>
+            <div class="card-body px-4 py-0"></div>
+          </div>
         </div>
         <div class="col-md-6">
-          <h2>訂單成立</h2>
-          <p>感謝您的購買，收到訂單後，預計3~5天出貨，請您耐心等候。</p>
-          <router-link :to="{ name: 'Index' }" class="btn btn-outline-dark me-2 rounded-0 mb-4">回首頁</router-link>
           <div class="card rounded-0 py-3">
             <div class="card-header border-bottom-0 bg-white px-4 py-0">
               <h2>顧客資訊</h2>
@@ -99,14 +94,11 @@ export default {
               <ul class="list-group list-group-flush">
                 <li class="list-group-item px-0">
                   <div class="d-flex mt-2">
-                    <!-- <img :src="item.product.imageUrl" alt="" class="me-2" style="width: 60px; height: 60px; object-fit: cover" /> -->
                     <div class="w-100 d-flex flex-column text-start">
-                      <!-- <div class="d-flex justify-content-between fw-bold"> -->
                       <h5 class="py-1">顧客姓名：{{ userData.name }}</h5>
                       <h5 class="py-1">電子郵件{{ userData.email }}</h5>
                       <h5 class="py-1">顧客電話：{{ userData.tel }}</h5>
                       <h5 class="pt-1">地址：{{ userData.address }}</h5>
-                      <!-- </div> -->
                     </div>
                   </div>
                 </li>
@@ -143,7 +135,8 @@ export default {
                     <tbody>
                       <tr>
                         <th scope="row" class="border-0 px-0 font-weight-normal">小計</th>
-                        <td class="text-end border-0 px-0">NT${{ (order.total / couponData.percent) * 100 }}</td>
+                        <td class="text-end border-0 px-0" v-if="couponData">NT${{ (order.total / couponData.percent) * 100 }}</td>
+                        <td class="text-end border-0 px-0" v-else>NT${{ order.total }}</td>
                       </tr>
                       <tr v-if="couponData">
                         <th scope="row" class="border-0 px-0 pt-0 font-weight-normal">優惠券</th>

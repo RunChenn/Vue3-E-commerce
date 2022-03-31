@@ -38,7 +38,6 @@ export default {
 
         cart.value = res.data;
 
-        console.log(cart.value);
         isLoading.value = false;
       } catch (err) {
         alert(err.message);
@@ -122,8 +121,6 @@ export default {
       try {
         loadingStatus.loadingItem = codeText.value !== '';
 
-        console.log(codeText.value);
-
         const code = {
           code: codeText.value,
         };
@@ -133,14 +130,7 @@ export default {
         isHaveCoupon.value = true;
         codeText.value = '';
 
-        // res.data.final_total
-
-        console.log(res);
-        console.log(cart.value);
-
         codeMsg.value = res.message.split(':')[1];
-
-        console.log(codeMsg.value);
 
         alert(res.message);
         loadingStatus.loadingItem = '';
@@ -171,7 +161,7 @@ export default {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container pt-4">
     <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
 
@@ -196,13 +186,6 @@ export default {
               </div>
             </div>
           </div>
-
-          <!-- <div class="input-group mb-3 ml-auto">
-                    <input type="text" class="form-control" placeholder="輸入優惠券" aria-label="Recipient's username" aria-describedby="button-addon2" />
-                    <button class="btn btn-outline-dark border-bottom border-top border-start border-end rounded-0" type="button" id="button-addon2">
-                      套用
-                    </button>
-                  </div> -->
         </div>
         <div class="col-md-4">
           <div class="border p-4 mb-4">
@@ -231,7 +214,6 @@ export default {
       <div class="row" v-else>
         <div class="border p-4 mb-4">
           <h4 class="fw-bold mt-3 mb-4">購物車目前沒有商品</h4>
-          <!-- <a href="./checkout.html" class="btn btn-dark w-100 mt-4">前往結帳</a> -->
           <router-link class="btn btn-primary" to="/products">繼續購物</router-link>
         </div>
       </div>

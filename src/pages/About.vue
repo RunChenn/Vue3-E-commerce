@@ -1,5 +1,5 @@
 <script>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import SwiperSlide from '../components/Carousel.vue';
 
@@ -7,13 +7,23 @@ export default {
   components: { Breadcrumb, SwiperSlide },
   name: 'About',
   setup() {
-    return {};
+    const isLoading = ref(false);
+
+    onMounted(async () => {
+      isLoading.value = true;
+      isLoading.value = false;
+    });
+    return {
+      isLoading,
+    };
   },
 };
 </script>
 
 <template>
-  <div class="container about">
+  <div class="container pt-4 about">
+    <!-- Loading -->
+    <Loading v-model:active="isLoading" :is-full-page="true" />
     <SwiperSlide />
     <Breadcrumb class="mt-5" />
     <div class="mb-5">
@@ -64,11 +74,7 @@ export default {
 
 <style lang="scss" scoped>
 .about {
-  /* .about-content {
-    padding: 70px;
-  } */
   .about-card-first {
-    /* position: relative; */
     margin: 10px 0 50px 0;
     .about-img-position {
       position: absolute;
@@ -76,11 +82,6 @@ export default {
       right: 30px;
       height: 480px;
     }
-    /* .about-card-first-main {
-      display: table;
-      margin: -10% 15px 0 auto;
-      width: 30%;
-    } */
   }
 
   .about-card-second {

@@ -27,23 +27,10 @@ export default {
 </script>
 
 <template>
-  <!-- <div class="bg-light py-4">
-    <div class="container">
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start">
-        <p class="mb-0 fw-bold">Lorem ipsum dolor sit amet.</p>
-        <div class="input-group w-md-50 mt-md-0 mt-3">
-          <input type="text" class="form-control rounded-0" placeholder="" />
-          <div class="input-group-append">
-            <button class="btn btn-dark rounded-0" type="button" id="search">Lorem ipsum</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <div class="bg-primary py-5">
     <div class="container">
       <div class="d-flex align-items-center justify-content-between text-white mb-md-7 mb-4">
-        <router-link :to="{ name: 'Index' }">
+        <router-link :to="{ name: 'Home' }">
           <img src="../assets/img/img_footlogo.png" class="card-img-top rounded-0" width="100px" alt="Logo" />
         </router-link>
         <ul class="d-flex list-unstyled mb-0 h4">
@@ -53,9 +40,6 @@ export default {
           <li>
             <a href="https://www.instagram.com/navigant_italy/" class="text-white mx-3"><i class="fab fa-instagram"></i></a>
           </li>
-          <!-- <li>
-            <a href="#" class="text-white ms-3"><i class="fab fa-line"></i></a>
-          </li> -->
         </ul>
       </div>
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end align-items-start text-white text-start">

@@ -37,8 +37,6 @@ export default {
 
         cart.value = res.data;
 
-        console.log(cart.value);
-
         if (cart.value.carts[0].coupon) {
           isHaveCoupon.value = true;
           codeMsg.value = cart.value.carts[0].coupon.code;
@@ -57,12 +55,8 @@ export default {
       try {
         const res = await api.order.addOrder({ data: order });
 
-        // alert(res.message);
-        console.log(res);
-
         router.push({ name: 'checkout-success', params: { id: res.orderId } });
 
-        // getCart();
         isLoading.value = false;
       } catch (err) {
         loadingStatus.loadingItem = '';
@@ -85,29 +79,11 @@ export default {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container pt-4">
     <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
 
     <div class="mt-3">
-      <!-- <div class="row justify-content-center mb-5">
-        <div class="col-md-12">
-          <h3 class="fw-bold mb-4 pt-3"><i class="fas fa-shopping-bag"></i>&nbsp;確認訂單</h3>
-        </div>
-        <div class="col-md-12">
-          <ul class="list-unstyled mb-0 ms-md-auto d-flex align-items-center justify-content-between justify-content-md-center w-100 mt-md-0 mt-4">
-            <li class="me-md-6 me-3 position-relative custom-step-line">
-              <i class="fas fa-check-circle d-md-inline d-block text-center"></i>
-              <span class="text-nowrap">&nbsp;購物車</span>
-            </li>
-            <li class="me-md-6 me-3 position-relative custom-step-line">
-              <i class="fas fa-check-circle d-md-inline d-block text-center"></i>
-              <span class="text-nowrap">&nbsp;確認訂單</span>
-            </li>
-            <li><i class="fas fa-dot-circle d-md-inline d-block text-center"></i> <span class="text-nowrap">完成訂單</span></li>
-          </ul>
-        </div>
-      </div> -->
       <div class="row flex-row-reverse justify-content-center pb-5">
         <div class="col-md-6" v-if="cart.carts">
           <div class="border p-4 mb-4">
