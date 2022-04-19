@@ -27,10 +27,10 @@ export default {
     <SwiperSlide />
     <Breadcrumb class="mt-5" />
     <div class="mb-5">
-      <img src="../assets/img/img_wd.jpeg" class="img-fluid rounded-start" alt="..." />
+      <img src="../assets/img/img_wd.jpeg" class="img-fluid rounded-start" alt="about-navigant" />
     </div>
     <div>
-      <img src="../assets/img/img_about.jpeg" class="img-fluid rounded-start" alt="..." />
+      <img src="../assets/img/img_about.jpeg" class="img-fluid rounded-start" alt="about-navigant" />
     </div>
     <div class="about-content px-5 pb-5">
       <div class="card about-card-first border-0 text-start">
@@ -43,7 +43,7 @@ export default {
           </div>
           <div class="col-12 col-sm-12 col-md-5 col-md-push-7">
             <div clas="about-card-first-main">
-              <img src="../assets/img/img_about-1.jpeg" class="img-fluid rounded-start about-img-position" alt="..." />
+              <img src="../assets/img/img_about-1.jpeg" class="img-fluid rounded-start about-img-position" alt="about-navigant" />
             </div>
           </div>
         </div>

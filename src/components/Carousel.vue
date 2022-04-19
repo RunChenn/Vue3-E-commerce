@@ -44,7 +44,7 @@ export default {
         }"
       >
         <swiper-slide class="swiper-slide" v-for="banner in swipImg" :key="banner">
-          <img style="width: 100%; height: 400px" :src="banner" alt="" />
+          <img style="width: 100%; height: 400px" :src="banner" alt="banner" />
         </swiper-slide>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-prev"></div>

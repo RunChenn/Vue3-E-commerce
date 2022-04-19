@@ -88,7 +88,7 @@ export default {
         <div class="col-md-6" v-if="cart.carts">
           <div class="border p-4 mb-4">
             <div class="d-flex" v-for="item in cart.carts" :key="item.id">
-              <img src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80" alt="" class="me-2" style="width: 48px; height: 48px; object-fit: cover" />
+              <img src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80" alt="checkout-img" class="me-2 checkout-product-img" />
               <div class="w-100">
                 <div class="d-flex justify-content-between">
                   <p class="mb-0 fw-bold">{{ item.product.title }}</p>
@@ -148,5 +148,11 @@ img {
 .form-check-input:checked {
   border-color: #198754;
   background-color: #198754;
+}
+
+.checkout-product-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
 }
 </style>

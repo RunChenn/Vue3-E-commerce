@@ -9,25 +9,22 @@ export default {
       list: [],
     });
 
-    // onMounted
     onMounted(() => {
-      const matched = route.matched; // 獲取菜單對應的路由信息
-      state.list = matched.filter((item) => item.meta.hidden !== true); // 更新路由菜單數組
+      const matched = route.matched;
+      state.list = matched.filter((item) => item.meta.hidden !== true);
     });
 
-    // watch
     watch(
       () => route.matched,
       (newVal) => {
         const matched = newVal;
 
-        state.list = matched.filter((item) => item.meta.hidden !== true); // 更新路由菜單數組
+        state.list = matched.filter((item) => item.meta.hidden !== true);
       }
     );
 
-    // return
     return {
-      ...toRefs(state), // toRefs() 將數據變成響應式數據
+      ...toRefs(state),
     };
   },
 };

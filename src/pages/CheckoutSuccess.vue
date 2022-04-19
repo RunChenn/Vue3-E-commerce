@@ -66,13 +66,7 @@ export default {
   <div class="container pt-4">
     <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
-    <div
-      style="
-        min-height: 400px;
-        background-image: url(https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1648265449862.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=LQZxp16W7KgXS3iq7y3CrN7buiB3WDc4zwXnTfcYPJL0snx2Vo5iY%2FrPna%2BZ%2Bd8B3EAk33lx0PcYNlX2tgtV1Qta8C1QYCMM1rmitHB4a7mmAHc9GDFJwYJ2KCGG1f6c2z8lBVoWptSKbuQPgrgIYPcahxI5Uzec0Po1nRPxEbkX%2FacpXv4UyodhVi%2BBvDx6Tf1wdHWaUEfbzsMOLwvkKPWyLdXiQanw14fii9SgYAyvz88kgfTZL8MJTB5qe3HQATBZBqsQ3iUSjwn87qhW%2BofclZddBvbsF4p%2FZvZTvbAkxnpfk8S6uuzmSyr0BhEc%2BYyNhjsBMjrbCcsugqE6mQ%3D%3D);
-        background-position: center center;
-      "
-    ></div>
+    <div class="checkout-success-bg"></div>
     <div class="mt-5 mb-5">
       <div class="row">
         <div class="col-md-12 mb-5">
@@ -115,7 +109,7 @@ export default {
               <ul class="list-group list-group-flush">
                 <li class="list-group-item px-0">
                   <div class="d-flex mt-2" v-for="item in order.products" :key="item.title">
-                    <img :src="item.product.imageUrl" alt="" class="me-2" style="width: 60px; height: 60px; object-fit: cover" />
+                    <img :src="item.product.imageUrl" alt="product-img" class="me-2" style="width: 60px; height: 60px; object-fit: cover" />
                     <div class="w-100 d-flex flex-column">
                       <div class="d-flex justify-content-between fw-bold">
                         <h5>{{ item.product.title }}</h5>
@@ -182,5 +176,11 @@ img {
 .form-check-input:checked {
   border-color: #198754;
   background-color: #198754;
+}
+
+.checkout-success-bg {
+  min-height: 400px;
+  background-image: url(https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1648265449862.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=LQZxp16W7KgXS3iq7y3CrN7buiB3WDc4zwXnTfcYPJL0snx2Vo5iY%2FrPna%2BZ%2Bd8B3EAk33lx0PcYNlX2tgtV1Qta8C1QYCMM1rmitHB4a7mmAHc9GDFJwYJ2KCGG1f6c2z8lBVoWptSKbuQPgrgIYPcahxI5Uzec0Po1nRPxEbkX%2FacpXv4UyodhVi%2BBvDx6Tf1wdHWaUEfbzsMOLwvkKPWyLdXiQanw14fii9SgYAyvz88kgfTZL8MJTB5qe3HQATBZBqsQ3iUSjwn87qhW%2BofclZddBvbsF4p%2FZvZTvbAkxnpfk8S6uuzmSyr0BhEc%2BYyNhjsBMjrbCcsugqE6mQ%3D%3D);
+  background-position: center center;
 }
 </style>

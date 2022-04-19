@@ -28,12 +28,9 @@ export default {
     let productModal = ref(null);
 
     onMounted(async () => {
-      productModal.value = new Modal(
-        document.getElementById('adminProductModal'),
-        {
-          keyboard: false,
-        }
-      );
+      productModal.value = new Modal(document.getElementById('adminProductModal'), {
+        keyboard: false,
+      });
     });
 
     // 上傳圖片;
@@ -90,16 +87,7 @@ export default {
 </script>
 
 <template>
-  <div
-    id="adminProductModal"
-    ref="adminProductModal"
-    class="modal fade text-start"
-    tabindex="-1"
-    aria-labelledby="adminProductModalLabel"
-    aria-hidden="true"
-    data-bs-backdrop="static"
-    data-bs-keyboard="false"
-  >
+  <div id="adminProductModal" ref="adminProductModal" class="modal fade text-start" tabindex="-1" aria-labelledby="adminProductModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-scrollable modal-xl">
       <div class="modal-content border-0">
         <div class="modal-header bg-primary text-white">
@@ -107,12 +95,7 @@ export default {
             <span v-if="isNew">新增產品</span>
             <span v-else>編輯產品</span>
           </h5>
-          <button
-            type="button"
-            class="btn-close text-white"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form class="row needs-validation" novalidate>
@@ -121,13 +104,7 @@ export default {
                 <label for="imageUrl" class="form-label">主要圖片</label>
                 <div class="mb-3">
                   <!-- <label for="oneFileInput" class="form-label">上傳圖片</label> -->
-                  <input
-                    class="form-control"
-                    type="file"
-                    id="oneFileInput"
-                    ref="oneFileInput"
-                    @change="upload('oneImage')"
-                  />
+                  <input class="form-control" type="file" id="oneFileInput" ref="oneFileInput" @change="upload('oneImage')" />
                 </div>
                 <!-- <input
                   v-if="product.imageUrl"
@@ -137,30 +114,15 @@ export default {
                   placeholder="請輸入圖片連結"
                   required
                 /> -->
-                <img
-                  class="img-fluid"
-                  v-if="product.imageUrl"
-                  :src="product.imageUrl"
-                />
+                <img class="img-fluid" v-if="product.imageUrl" :src="product.imageUrl" alt="product-img" />
               </div>
               <h3 class="mb-3">多圖新增</h3>
               <div class="mb-3">
                 <!-- <label for="fileInput" class="form-label">上傳圖片</label> -->
-                <input
-                  class="form-control"
-                  type="file"
-                  id="fileInput"
-                  ref="fileInput"
-                  multiple
-                  @change="upload('multipleImage')"
-                />
+                <input class="form-control" type="file" id="fileInput" ref="fileInput" multiple @change="upload('multipleImage')" />
               </div>
               <div v-if="Array.isArray(product.imagesUrl)">
-                <div
-                  class="mb-1"
-                  v-for="image in product.imagesUrl"
-                  :key="`${image}index`"
-                >
+                <div class="mb-1" v-for="image in product.imagesUrl" :key="`${image}index`">
                   <!-- <div class="mb-3">
                     <label for="imageUrl" class="form-label">圖片網址</label>
                     <input
@@ -170,7 +132,7 @@ export default {
                       placeholder="請輸入圖片連結"
                     />
                   </div> -->
-                  <img class="img-fluid" :src="image" />
+                  <img class="img-fluid" :src="image" alt="product-img" />
                 </div>
                 <!-- <div
                   v-if="
@@ -195,87 +157,38 @@ export default {
                 </div> -->
               </div>
               <div v-else>
-                <button
-                  class="btn btn-outline-primary btn-sm d-block w-100"
-                  @click="createImages"
-                >
-                  新增圖片
-                </button>
+                <button type="button" class="btn btn-outline-primary btn-sm d-block w-100" @click="createImages">新增圖片</button>
               </div>
             </div>
             <div class="col-sm-8">
               <div class="mb-3">
                 <label for="title" class="form-label">標題</label>
-                <input
-                  id="title"
-                  v-model="product.title"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入標題"
-                  required
-                />
+                <input id="title" v-model="product.title" type="text" class="form-control" placeholder="請輸入標題" required />
               </div>
 
               <div class="row">
                 <div class="mb-3 col-md-6">
                   <label for="category" class="form-label">分類</label>
-                  <input
-                    id="category"
-                    v-model="product.category"
-                    type="text"
-                    class="form-control"
-                    placeholder="請輸入分類"
-                    required
-                  />
+                  <input id="category" v-model="product.category" type="text" class="form-control" placeholder="請輸入分類" required />
                 </div>
                 <div class="mb-3 col-md-6">
                   <label for="price" class="form-label">單位</label>
-                  <input
-                    id="unit"
-                    v-model="product.unit"
-                    type="text"
-                    class="form-control"
-                    placeholder="請輸入單位"
-                  />
+                  <input id="unit" v-model="product.unit" type="text" class="form-control" placeholder="請輸入單位" />
                 </div>
               </div>
 
               <div class="row">
                 <div class="mb-3 col-md-6">
                   <label for="origin_price" class="form-label">原價</label>
-                  <input
-                    id="origin_price"
-                    v-model.number="product.origin_price"
-                    type="number"
-                    min="0"
-                    class="form-control"
-                    placeholder="請輸入原價"
-                    required
-                  />
+                  <input id="origin_price" v-model.number="product.origin_price" type="number" min="0" class="form-control" placeholder="請輸入原價" required />
                 </div>
                 <div class="mb-3 col-md-6">
                   <label for="price" class="form-label">售價</label>
-                  <input
-                    id="price"
-                    v-model.number="product.price"
-                    type="number"
-                    min="0"
-                    class="form-control"
-                    placeholder="請輸入售價"
-                    required
-                  />
+                  <input id="price" v-model.number="product.price" type="number" min="0" class="form-control" placeholder="請輸入售價" required />
                 </div>
                 <div class="mb-3">
                   <label for="price" class="form-label">庫存數量</label>
-                  <input
-                    id="price"
-                    v-model.number="product.inventory"
-                    type="number"
-                    min="0"
-                    class="form-control"
-                    placeholder="請輸入庫存數量"
-                    required
-                  />
+                  <input id="price" v-model.number="product.inventory" type="number" min="0" class="form-control" placeholder="請輸入庫存數量" required />
                 </div>
                 <!-- 未來會用到 -->
                 <!-- <div class="mb-3">
@@ -304,59 +217,24 @@ export default {
 
               <div class="mb-3">
                 <label for="description" class="form-label">產品描述</label>
-                <textarea
-                  id="description"
-                  v-model="product.description"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入產品描述"
-                >
-                </textarea>
+                <textarea id="description" v-model="product.description" type="text" class="form-control" placeholder="請輸入產品描述"> </textarea>
               </div>
               <div class="mb-3">
                 <label for="content" class="form-label">說明內容</label>
-                <textarea
-                  id="description"
-                  v-model="product.content"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入說明內容"
-                >
-                </textarea>
+                <textarea id="description" v-model="product.content" type="text" class="form-control" placeholder="請輸入說明內容"> </textarea>
               </div>
               <div class="mb-3">
                 <div class="form-check">
-                  <input
-                    id="is_enabled"
-                    v-model="product.is_enabled"
-                    class="form-check-input"
-                    type="checkbox"
-                    :true-value="1"
-                    :false-value="0"
-                  />
-                  <label class="form-check-label" for="is_enabled"
-                    >是否啟用</label
-                  >
+                  <input id="is_enabled" v-model="product.is_enabled" class="form-check-input" type="checkbox" :true-value="1" :false-value="0" />
+                  <label class="form-check-label" for="is_enabled">是否啟用</label>
                 </div>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-outline-danger"
-            data-bs-dismiss="modal"
-          >
-            取消
-          </button>
-          <button
-            type="button"
-            class="btn btn-success"
-            @click="$emit('update-product', product)"
-          >
-            確認
-          </button>
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-success" @click="$emit('update-product', product)">確認</button>
         </div>
       </div>
     </div>

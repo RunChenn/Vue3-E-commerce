@@ -153,7 +153,7 @@ export default {
             </div>
           </div>
           <div class="col-6">
-            <button class="text-nowrap btn btn-dark w-100 py-2" @click="addToCart(product.id)">加入購物車</button>
+            <button type="button" class="text-nowrap btn btn-dark w-100 py-2" @click="addToCart(product.id)">加入購物車</button>
           </div>
         </div>
       </div>
@@ -173,14 +173,12 @@ export default {
         </ul>
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade py-3 px-3 show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <!-- <h3 class="fw-bold mt-4">Lorem ipsum dolor sit amet</h3> -->
             <div class="mt-4 mb-5">
-              <img v-for="(img, index) in product.imagesUrl" :key="img" :src="img" class="rounded-0 d-block mx-auto mb-3 tabProdsImg" alt="商品圖片" />
+              <img v-for="img in product.imagesUrl" :key="img" :src="img" class="rounded-0 d-block mx-auto mb-3 tabProdsImg" alt="商品圖片" />
             </div>
           </div>
           <div class="tab-pane fade py-3 px-3" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <img src="../assets/img/試穿建議表.jpg" class="d-block w-55 w-md-100 mx-auto" alt="商品圖片" />
-            <!-- src="./assets/img/試穿建議表.jpg" -->
+            <img src="../assets/img/試穿建議表.jpg" class="d-block w-55 w-md-100 mx-auto" alt="試穿建議表" />
           </div>
           <div class="tab-pane fade text-start py-3 px-3" id="contact" role="tabpanel" aria-labelledby="contact-tab">
             <p class="mb-1 fw-bold">▲ 依照消費者保護法規定，線上購物消費者均享有商品到貨七天猶豫期之權益，並非試用期。</p>

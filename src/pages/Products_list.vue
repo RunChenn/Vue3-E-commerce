@@ -14,7 +14,6 @@ export default {
   name: 'Products',
   setup() {
     const isLoading = ref(false);
-    // const fullPage = ref(true);
 
     const products = ref([]);
     const product = ref({});

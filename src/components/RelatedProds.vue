@@ -69,7 +69,7 @@ export default {
           <div class="card border-0 mb-4 position-relative">
             <div class="pic">
               <router-link :to="{ name: 'ProductDetail', params: { id: item.id } }" class="pic">
-                <img class="card-img-top rounded-0" :src="item.imageUrl" alt="" :height="380" />
+                <img class="card-img-top rounded-0" :src="item.imageUrl" alt="product-img" :height="380" />
               </router-link>
             </div>
             <a href="#" class="text-dark"> </a>

@@ -117,6 +117,10 @@ const routes = [
     ],
   },
   {
+    path: '/:pathMatch(.*)*',
+    redirect: { name: 'Home' },
+  },
+  {
     path: '/admin/:pathMatch(.*)*',
     redirect: { name: 'Login' },
   },
