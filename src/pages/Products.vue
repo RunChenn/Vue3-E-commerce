@@ -1,5 +1,5 @@
 <script>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
 import api from '../api/index.js';
 
 import Breadcrumb from '../components/Breadcrumb.vue';
@@ -26,6 +26,11 @@ export default {
     const loadingStatus = reactive({
       loadingItem: '',
     });
+
+    // const emitter = inject('$emitter');
+
+    // this.$httpMessageState(response, '登出');
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
 
     onMounted(async () => {
       isLoading.value = true;
@@ -64,6 +69,10 @@ export default {
         };
 
         const res = await api.cart.addCart({ data: cart });
+
+        console.log(res);
+
+        $httpMsgState.toastsMsg(res, '加入購物車');
 
         alert(res.message);
 

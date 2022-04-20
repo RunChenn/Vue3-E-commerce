@@ -9,6 +9,8 @@ export default {
   components: { Breadcrumb, RelatedProds },
   name: 'Home',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
+
     let { proxy } = getCurrentInstance();
 
     const isLoading = ref(false);
@@ -92,11 +94,13 @@ export default {
 
         const res = await api.cart.addCart({ data: cart });
 
-        alert(res.message);
+        console.log(res);
+
+        $httpMsgState.toastsMsg(res, '加入購物車');
 
         loadingStatus.loadingItem = '';
       } catch (err) {
-        alert(err.message);
+        $httpMsgState.toastsMsg(err, '加入購物車');
       }
     };
 

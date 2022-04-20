@@ -23,6 +23,9 @@ import '@fortawesome/free-solid-svg-icons';
 import 'jquery';
 import 'bootstrap';
 
+// import $httpMsgState from './plugins/pushMsgState';
+import { toastsMsg } from './plugins/pushMsgState';
+
 import veeValidate from './plugins/vee-validate';
 import { date, currency } from './plugins/filters';
 
@@ -33,9 +36,18 @@ app.config.globalProperties.$filters = {
   currency,
 };
 
+app.config.globalProperties.$httpMsgState = {
+  toastsMsg,
+};
+
 // app.provide('message', function () {
 //   console.log('來自全域的 provide');
 // });
+
+// app.config.globalProperties.$emitter = $emitter;
+// app.provide('$emitter', $emitter);
+
+// app.config.globalProperties.$httpMsgState = $httpMsgState;
 
 app.component('Loading', Loading);
 app.component('Swiper', Swiper);
