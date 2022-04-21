@@ -77,8 +77,8 @@ export default {
         product.value = prodsData.product;
         isLoading.value = false;
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
@@ -94,13 +94,11 @@ export default {
 
         const res = await api.cart.addCart({ data: cart });
 
-        console.log(res);
-
-        $httpMsgState.toastsMsg(res, '加入購物車');
+        $httpMsgState(res, '加入購物車');
 
         loadingStatus.loadingItem = '';
       } catch (err) {
-        $httpMsgState.toastsMsg(err, '加入購物車');
+        $httpMsgState(err, '加入購物車');
       }
     };
 

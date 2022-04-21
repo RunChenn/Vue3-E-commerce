@@ -1,5 +1,5 @@
 <script>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
 import { useRoute } from 'vue-router';
 import api from '../api/index.js';
 
@@ -11,6 +11,8 @@ export default {
   components: { Carts, Form, RelatedProds },
   name: 'CheckoutSuccess',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
+
     const isLoading = ref(false);
 
     const route = useRoute();
@@ -45,8 +47,8 @@ export default {
 
         isLoading.value = false;
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 

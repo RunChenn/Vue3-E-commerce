@@ -14,6 +14,8 @@ export default {
   components: { Carousel, Breadcrumb, ProdModal, ProdsTable, Pagination, Carts, Form },
   name: 'Products',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
+
     const isLoading = ref(false);
 
     const pagination = ref({});
@@ -26,11 +28,6 @@ export default {
     const loadingStatus = reactive({
       loadingItem: '',
     });
-
-    // const emitter = inject('$emitter');
-
-    // this.$httpMessageState(response, '登出');
-    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
 
     onMounted(async () => {
       isLoading.value = true;
@@ -54,7 +51,7 @@ export default {
         isLoading.value = false;
       } catch (err) {
         isLoading.value = false;
-        alert(err.message);
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
@@ -70,15 +67,11 @@ export default {
 
         const res = await api.cart.addCart({ data: cart });
 
-        console.log(res);
-
-        $httpMsgState.toastsMsg(res, '加入購物車');
-
-        alert(res.message);
+        $httpMsgState(res, '加入購物車');
 
         loadingStatus.loadingItem = '';
       } catch (err) {
-        alert(err.message);
+        $httpMsgState(err, '加入購物車');
       }
     };
 

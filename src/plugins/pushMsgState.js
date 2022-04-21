@@ -1,7 +1,7 @@
 import eventBus from './eventBus';
 
-// export default function (response, title = '更新') {
-export function toastsMsg(response, title = '更新') {
+export default function (response, title = '更新') {
+  // export function toastsMsg(response, title = '更新') {
   console.log(response);
   console.log(title);
   if (response.success) {

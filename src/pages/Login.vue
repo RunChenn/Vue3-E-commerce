@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 import api from '../api/index.js';
 import { Cookies, tokenName } from '../utils/cookies.js';
 
@@ -8,6 +8,8 @@ import { useRouter } from 'vue-router';
 export default {
   name: 'Login',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
+
     const router = useRouter();
     const email = ref('');
     const password = ref('');
@@ -24,7 +26,7 @@ export default {
         Cookies.setCookie(tokenName, token, expired);
         router.push({ name: 'admin-Products' });
       } catch (err) {
-        alert(err.message);
+        $httpMsgState(err, '登入');
       }
     };
 
@@ -44,31 +46,14 @@ export default {
       <div class="col-8">
         <form id="form" class="form-signin" @submit.prevent="login">
           <div class="form-floating mb-3">
-            <input
-              type="email"
-              class="form-control"
-              id="username"
-              placeholder="name@example.com"
-              required
-              autofocus
-              v-model="email"
-            />
+            <input type="email" class="form-control" id="username" placeholder="name@example.com" required autofocus v-model="email" />
             <label for="username">Email address</label>
           </div>
           <div class="form-floating">
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              placeholder="Password"
-              required
-              v-model="password"
-            />
+            <input type="password" class="form-control" id="password" placeholder="Password" required v-model="password" />
             <label for="password">Password</label>
           </div>
-          <button class="btn btn-lg btn-primary w-100 mt-3" type="submit">
-            登入
-          </button>
+          <button class="btn btn-lg btn-primary w-100 mt-3" type="submit">登入</button>
         </form>
       </div>
     </div>

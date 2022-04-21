@@ -6,9 +6,9 @@
         <strong class="me-auto">{{ msg.title }}</strong>
         <button type="button" class="btn-close" @click="clearToast(key)" aria-label="Close"></button>
       </div>
-      <div class="toast-body" v-if="msg.content">
+      <!-- <div class="toast-body" v-if="msg.content">
         {{ msg.content }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -24,9 +24,7 @@ export default {
     let messages = ref([]);
 
     onMounted(() => {
-      console.log(emitter);
       emitter.on('push-message', (message) => {
-        console.log(message);
         const { style = 'success', title, content } = message;
         messages.value.push({ style, title, content });
         toastShow();
@@ -35,10 +33,8 @@ export default {
 
     const toastShow = () => {
       setTimeout(() => {
-        console.log(messages.value);
         messages.value.shift();
-        console.log(messages.value);
-      }, 6000);
+      }, 3000);
     };
 
     const clearToast = (index) => {
@@ -54,4 +50,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.toast-container {
+  top: 20px !important;
+}
+</style>

@@ -1,7 +1,13 @@
-<script setup></script>
+<script>
+import ToastsMsg from './components/toastsMsg.vue';
+export default {
+  components: { ToastsMsg },
+};
+</script>
 
 <template>
   <div id="app">
+    <ToastsMsg />
     <RouterView />
   </div>
 </template>

@@ -11,13 +11,13 @@ export default ({ mode }) => {
     server: {
       host: '0.0.0.0',
       open: true,
-      // proxy: {
-      //   '/api': {
-      //     target: 'https://vue3-course-api.hexschool.io/v2',
-      //     changeOrigin: true, // 支持跨域
-      //     rewrite: (path) => path.replace(/^\/api/, ''),
-      //   },
-      // },
+      proxy: {
+        '/api': {
+          target: 'https://vue3-course-api.hexschool.io/v2',
+          changeOrigin: true, // 支持跨域
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
+      },
       define: {
         'process.env': {},
       },

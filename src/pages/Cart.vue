@@ -1,5 +1,5 @@
 <script>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
 import api from '../api/index.js';
 
 import Carts from '../components/Carts.vue';
@@ -10,6 +10,8 @@ export default {
   components: { Carts, Form, RelatedProds },
   name: 'Products',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
+
     const isLoading = ref(false);
 
     const cart = ref({});
@@ -40,8 +42,8 @@ export default {
 
         isLoading.value = false;
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
@@ -58,13 +60,13 @@ export default {
 
         const res = await api.cart.addCart({ data: cart });
 
-        alert(res.message);
+        $httpMsgState(res, '加入購物車');
 
         loadingStatus.loadingItem = '';
 
         getCart();
       } catch (err) {
-        alert(err.message);
+        $httpMsgState(err, '加入購物車');
       }
     };
 
@@ -75,11 +77,12 @@ export default {
 
         loadingStatus.loadingItem = id;
 
-        alert(res.message);
+        $httpMsgState(res, '移除購物車品項');
         loadingStatus.loadingItem = '';
+
         getCart();
       } catch (err) {
-        alert(err.message);
+        $httpMsgState(err, '移除購物車品項');
       }
     };
 
@@ -88,10 +91,10 @@ export default {
       try {
         const res = await api.cart.removeCartAll();
 
-        alert(res.message);
+        $httpMsgState(res, '清除購物車');
         getCart();
       } catch (err) {
-        alert(err.message);
+        $httpMsgState(err, '清除購物車');
       }
     };
 
@@ -107,12 +110,12 @@ export default {
 
         const res = await api.cart.updateCart({ data: cart });
 
-        alert(res.message);
+        $httpMsgState(res, '更新購物車');
         loadingStatus.loadingItem = '';
         getCart();
       } catch (err) {
         loadingStatus.loadingItem = '';
-        alert(err.message);
+        $httpMsgState(err, '更新購物車');
       }
     };
 
@@ -132,12 +135,12 @@ export default {
 
         codeMsg.value = res.message.split(':')[1];
 
-        alert(res.message);
+        $httpMsgState(res, '加入優惠券');
         loadingStatus.loadingItem = '';
         getCart();
       } catch (err) {
         loadingStatus.loadingItem = '';
-        alert(err.message);
+        $httpMsgState(err, '加入優惠券');
       }
     };
 
