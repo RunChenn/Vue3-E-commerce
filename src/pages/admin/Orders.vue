@@ -6,7 +6,7 @@ import api from '../../api/index.js';
 
 import { Modal } from 'bootstrap';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 
 export default {
   components: {
@@ -16,19 +16,14 @@ export default {
   },
   name: 'admin-Orders',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
     const isLoading = ref(false);
-
     const orderModal = ref({});
     const delModal = ref({});
-
     const orders = ref({});
-
     const isNew = ref(false);
-
     const pagination = ref({});
-
     const tempOrder = ref({});
-
     const currentPage = ref(1);
 
     onMounted(async () => {
@@ -45,73 +40,58 @@ export default {
         await api.auth.checkAuth();
         getOrders();
       } catch (err) {
-        console.log(err);
-        alert(err.message);
+        $httpMsgState(err, '錯誤訊息');
       }
     });
 
     // 載入所有訂單
     const getOrders = async (page = 1) => {
       currentPage.value = page;
-
       isLoading.value = true;
-
       try {
         const ordersData = await api.adminOrder.getOrders(page);
-
         orders.value = ordersData.orders;
         pagination.value = ordersData.pagination;
-
         isLoading.value = false;
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
     const openModal = (item) => {
       isNew.value = false;
-
       tempOrder.value = { ...item };
     };
 
     const updatePaid = async (item) => {
       isLoading.value = true;
-
       try {
         const res = await api.adminOrder.updateOrders(item.id, {
           data: {
             is_paid: item.is_paid,
           },
         });
-
         isLoading.value = false;
-
-        alert(res.message);
-
+        $httpMsgState(res, '更新付款狀態');
         orderModal.value.hide();
-
         getOrders(currentPage.value);
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
     const delOrder = async () => {
       try {
         const res = await api.adminOrder.delOrder(tempOrder.value.id);
-
         isLoading.value = false;
-
-        alert(res.message);
-
+        $httpMsgState(res, '刪除訂單');
         delModal.value.hide();
-
         getOrders(currentPage.value);
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
@@ -131,9 +111,7 @@ export default {
 
 <template>
   <div class="container">
-    <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
-
     <div class="row py-1">
       <div class="col-12 col-sm-12">
         <table class="table table-hover mt-4">
@@ -149,10 +127,7 @@ export default {
           </thead>
           <tbody>
             <template v-for="(item, key) in orders" :key="key">
-              <tr
-                v-if="orders.length"
-                :class="{ 'text-primary': !item.is_paid }"
-              >
+              <tr v-if="orders.length" :class="{ 'text-primary': !item.is_paid }">
                 <td>{{ $filters.date(item.create_at) }}</td>
                 <td><span v-text="item.user.email" v-if="item.user"></span></td>
                 <td>
@@ -166,17 +141,8 @@ export default {
                 <td class="text-right">{{ item.total }}</td>
                 <td>
                   <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      :id="`paidSwitch${item.id}`"
-                      v-model="item.is_paid"
-                      @change="updatePaid(item)"
-                    />
-                    <label
-                      class="form-check-label"
-                      :for="`paidSwitch${item.id}`"
-                    >
+                    <input class="form-check-input" type="checkbox" :id="`paidSwitch${item.id}`" v-model="item.is_paid" @change="updatePaid(item)" />
+                    <label class="form-check-label" :for="`paidSwitch${item.id}`">
                       <span v-if="item.is_paid">已付款</span>
                       <span v-else>未付款</span>
                     </label>
@@ -184,24 +150,8 @@ export default {
                 </td>
                 <td>
                   <div class="btn-group">
-                    <button
-                      class="btn btn-outline-primary btn-sm"
-                      type="button"
-                      data-bs-target="#orderModal"
-                      data-bs-toggle="modal"
-                      @click="openModal(item)"
-                    >
-                      檢視
-                    </button>
-                    <button
-                      class="btn btn-outline-danger btn-sm"
-                      type="button"
-                      data-bs-target="#delModal"
-                      data-bs-toggle="modal"
-                      @click="openModal(item)"
-                    >
-                      刪除
-                    </button>
+                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-target="#orderModal" data-bs-toggle="modal" @click="openModal(item)">檢視</button>
+                    <button class="btn btn-outline-danger btn-sm" type="button" data-bs-target="#delModal" data-bs-toggle="modal" @click="openModal(item)">刪除</button>
                   </div>
                 </td>
               </tr>
@@ -210,15 +160,9 @@ export default {
         </table>
       </div>
     </div>
-    <!-- <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination> -->
     <Pagination v-model:pages="pagination" @update-pages="getOrders" />
-
     <!-- Modal -->
-    <OrderModal
-      v-model:order="tempOrder"
-      ref="orderModal"
-      @update-paid="updatePaid"
-    />
+    <OrderModal v-model:order="tempOrder" ref="orderModal" @update-paid="updatePaid" />
     <!-- delModal -->
     <DelModal ref="delModal" v-model:item="tempOrder" @del-item="delOrder" />
   </div>

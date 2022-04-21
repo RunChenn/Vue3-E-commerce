@@ -10,22 +10,19 @@ export default {
       {
         title: '透氣輕盈 柔軟彈性',
         text: '透氣舒適有效調解體溫 保護肌膚避免服裝破損',
-        imgUrl:
-          'https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1642347133690.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=MCf7QoAYKDpopNW6GB04FjhcyWY02GWYv8%2BhrrWh1Bt0ktRLfK%2BxEVA7%2BKRFRMG0SHghCIu4RrxQruY84GSU0VfB8p490swcs4JbI4gH5sHYXQBUvtLe0wZnTMRHhXElrro454oGFwiifpm6aCHUffYNIxnDR2nppU876QsxnSYaskiy5ywWEyjSaEtJjW%2F1ydj%2BVET3wl32w4y4En0Pl3r4UOl3v4zMfNf%2FWDCZOQPah2y%2Fvt5OCIuqn90WF4UzfGBTy92usV981V1avdT7%2FAolvd2%2FyHBCP0SIPlUtm%2FgGtUKyIU%2BN9Ht0Zepctlw18PPB36XV5cT%2BipUkcqHzvw%3D%3D',
+        imgUrl: new URL('../assets/img/home1.jpeg', import.meta.url),
         imgAlt: '透氣輕盈 柔軟彈性',
       },
       {
         title: '耐穿實用 跨界機能',
         text: '強韌耐穿應付多變天氣 上班通勤方便多種場合',
-        imgUrl:
-          'https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1642347919234.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=cBLaqvuTWiP%2FN7xDKUcIYwXel87kRJvyIA1Wzxn21mAUpUMBX%2FzodmAaba53nCpFUofbRykTFl07OaBVKU6A%2BtnTIqm7mYJzmyfpZRHQk7vvkyoAbgG0nn3xakmVmCHmnpHIn%2FW3ETKdfgoUlYxTDCQJJ%2B8CbLEF8dHgKGUtvtTWc9SB4v7PHTxWbb%2F9DaGLmj6AvVUABaBj93SGpFoeLbNDOnDl4E8zvbCrUkN7f0wT1PXv6%2FsCHmwp9OuCX72iw1sgursmRVlY%2BQhshQ%2FqoofEon2JhH%2F5ST3hEJG75xyzgKoSysP%2BgXxozLY7%2Be5fsz0PRvO%2F1%2F1cLrYFXvUIYA%3D%3D',
+        imgUrl: new URL('../assets/img/home2.jpeg', import.meta.url),
         imgAlt: '耐穿實用 跨界機能',
       },
       {
         title: '休閒運動 與眾不同',
         text: '自在活動挑戰最佳表現 打造簡約時尚機能造型',
-        imgUrl:
-          'https://storage.googleapis.com/vue-course-api.appspot.com/aprilchen/1643270797486.jpeg?GoogleAccessId=firebase-adminsdk-zzty7%40vue-course-api.iam.gserviceaccount.com&Expires=1742169600&Signature=VUvtmABM3r68OoFr0bpbcNZnn1AMKAM0LmvMni8dcOFMQfu5v2qEGyPuwmgA0MfqCTppzO5%2BK6nMj5pXsgWk73oCcG70nxEyBEPv3rdEKE8%2FTx30%2FrWlUN6NGEjxWlPbFuZ4IxhGewDUoWhoOg0jZ%2FyoAHPDwbI5Zbkb1EBDozDU3rpvLFsY6DO2ccdVdPmQdvZ1lHB%2FzrdYxYovDnMRaDF07dMq1BWCaK02IrHb%2FEwD%2F9KAltBJOZz45ToJKj1Egt4kK3bozNh2WEQFjbvt95Lilr2uQd3ZlI8f6EwwcLqITwmdhKlAjpvFZe7mnmoUvOoTPPCLngogZRou2KU%2FBA%3D%3D',
+        imgUrl: new URL('../assets/img/home3.jpeg', import.meta.url),
         imgAlt: '休閒運動 與眾不同',
       },
     ]);

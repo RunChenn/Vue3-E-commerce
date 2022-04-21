@@ -1,16 +1,16 @@
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 import api from '../api/index.js';
 export default {
   name: 'RelatedProds',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
     const isLoading = ref(false);
 
     const relatedProd = ref([]);
 
     onMounted(async () => {
       isLoading.value = true;
-
       getProducts();
     });
 
@@ -26,7 +26,7 @@ export default {
         isLoading.value = false;
       } catch (err) {
         isLoading.value = false;
-        alert(err.message);
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 

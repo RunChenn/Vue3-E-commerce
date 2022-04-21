@@ -22,7 +22,6 @@ export default {
 
 <template>
   <div class="container pt-4 about">
-    <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
     <SwiperSlide />
     <Breadcrumb class="mt-5" />

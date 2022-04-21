@@ -1,26 +1,44 @@
 <script>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 import api from '../api/index.js';
+import emitter from '../plugins/eventBus';
 
 export default {
   name: 'admin',
   setup() {
-    const router = useRouter();
-    const checkSuccess = ref(false);
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
 
-    const signout = async () => {
+    const cartsTotal = ref(0);
+
+    onMounted(() => {
+      getCart();
+      emitter.on('get-cart', () => {
+        getCart();
+      });
+    });
+
+    const getCart = async () => {
       try {
-        await api.auth.logout();
-        router.push({ name: 'Login' });
+        const res = await api.cart.getCart();
+
+        console.log(res.data);
+
+        let sum = 0;
+
+        res.data.carts.map((item) => {
+          sum += item.qty;
+        });
+
+        console.log(sum);
+
+        cartsTotal.value = sum;
       } catch (err) {
-        alert(err.message);
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
     return {
-      checkSuccess,
-      signout,
+      cartsTotal,
     };
   },
 };
@@ -41,7 +59,11 @@ export default {
         <router-link class="nav-item nav-link me-4" to="/">首頁</router-link>
         <router-link class="nav-item nav-link me-4" to="/about">關於我們</router-link>
         <router-link class="nav-item nav-link me-4" to="/products">產品列表</router-link>
-        <router-link class="nav-item nav-link me-4" to="/cart"><i class="fas fa-shopping-cart"></i></router-link>
+        <router-link class="nav-item nav-link me-4" to="/cart">
+          <i class="position-relative fas fa-shopping-cart">
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ cartsTotal }}</span>
+          </i>
+        </router-link>
       </div>
     </div>
   </nav>

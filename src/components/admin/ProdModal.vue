@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 import api from '../../api/index.js';
 
 import { Modal } from 'bootstrap';
@@ -24,7 +24,8 @@ export default {
       }),
     },
   },
-  setup(props, { emit }) {
+  setup(props) {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
     let productModal = ref(null);
 
     onMounted(async () => {
@@ -40,21 +41,15 @@ export default {
     const upload = async (status) => {
       if (status === 'oneImage') {
         const file = oneFileInput.value.files[0];
-
         const formData = new FormData();
-
         formData.append('file-to-upload', file);
-
         try {
           const res = await api.adminProducts.uploadImg(formData);
-
           const { imageUrl } = res;
-
           props.product.imageUrl = imageUrl;
         } catch (err) {
-          alert(err.message);
+          $httpMsgState(err, '錯誤訊息');
         }
-
         return;
       }
 
@@ -62,17 +57,13 @@ export default {
 
       for (let i = 0; i < fileInput.value.files.length; i++) {
         const formData = new FormData();
-
         formData.append('file-to-upload', fileInput.value.files[i]);
-
         try {
           const res = await api.adminProducts.uploadImg(formData);
-
           const { imageUrl } = res;
-
           props.product.imagesUrl.push(imageUrl);
         } catch (err) {
-          alert(err.message);
+          $httpMsgState(err, '錯誤訊息');
         }
       }
     };
@@ -103,58 +94,18 @@ export default {
               <div class="mb-3">
                 <label for="imageUrl" class="form-label">主要圖片</label>
                 <div class="mb-3">
-                  <!-- <label for="oneFileInput" class="form-label">上傳圖片</label> -->
                   <input class="form-control" type="file" id="oneFileInput" ref="oneFileInput" @change="upload('oneImage')" />
                 </div>
-                <!-- <input
-                  v-if="product.imageUrl"
-                  v-model="product.imageUrl"
-                  type="text"
-                  class="form-control mb-2"
-                  placeholder="請輸入圖片連結"
-                  required
-                /> -->
                 <img class="img-fluid" v-if="product.imageUrl" :src="product.imageUrl" alt="product-img" />
               </div>
               <h3 class="mb-3">多圖新增</h3>
               <div class="mb-3">
-                <!-- <label for="fileInput" class="form-label">上傳圖片</label> -->
                 <input class="form-control" type="file" id="fileInput" ref="fileInput" multiple @change="upload('multipleImage')" />
               </div>
               <div v-if="Array.isArray(product.imagesUrl)">
                 <div class="mb-1" v-for="image in product.imagesUrl" :key="`${image}index`">
-                  <!-- <div class="mb-3">
-                    <label for="imageUrl" class="form-label">圖片網址</label>
-                    <input
-                      v-model="product.imagesUrl[index]"
-                      type="text"
-                      class="form-control"
-                      placeholder="請輸入圖片連結"
-                    />
-                  </div> -->
                   <img class="img-fluid" :src="image" alt="product-img" />
                 </div>
-                <!-- <div
-                  v-if="
-                    !product.imagesUrl.length ||
-                    product.imagesUrl[product.imagesUrl.length - 1]
-                  "
-                >
-                  <button
-                    class="btn btn-outline-primary btn-sm d-block w-100"
-                    @click="product.imagesUrl.push('')"
-                  >
-                    新增圖片
-                  </button>
-                </div>
-                <div v-else>
-                  <button
-                    class="btn btn-outline-danger btn-sm d-block w-100"
-                    @click="product.imagesUrl.pop()"
-                  >
-                    刪除圖片
-                  </button>
-                </div> -->
               </div>
               <div v-else>
                 <button type="button" class="btn btn-outline-primary btn-sm d-block w-100" @click="createImages">新增圖片</button>
@@ -186,31 +137,9 @@ export default {
                   <label for="price" class="form-label">售價</label>
                   <input id="price" v-model.number="product.price" type="number" min="0" class="form-control" placeholder="請輸入售價" required />
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                   <label for="price" class="form-label">庫存數量</label>
                   <input id="price" v-model.number="product.inventory" type="number" min="0" class="form-control" placeholder="請輸入庫存數量" required />
-                </div>
-                <!-- 未來會用到 -->
-                <!-- <div class="mb-3">
-                  <div class="form-label">尺寸</div>
-                  <div
-                    class="btn-group"
-                    role="group"
-                    aria-label="Basic radio toggle button group"
-                  >
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="size"
-                      id="size-s"
-                      autocomplete="off"
-                      v-model="product.size"
-                      value="S"
-                    />
-                    <label class="btn btn-outline-primary" for="size-s"
-                      >S</label
-                    >
-                  </div>
                 </div> -->
               </div>
               <hr />
@@ -247,8 +176,6 @@ export default {
 .btn-group > .btn:nth-child(n + 3),
 .btn-group > :not(.btn-check) + .btn,
 .btn-group > .btn-group:not(:first-child) > .btn {
-  // border-top-right-radius: 0.25rem;
-  // border-bottom-right-radius: 0.25rem;
   border-radius: 0.25rem;
   margin-right: 10px;
   min-width: 45px;

@@ -2,6 +2,7 @@
 import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 import api from '../api/index.js';
+import emitter from '../plugins/eventBus';
 
 import Carts from '../components/Carts.vue';
 import Form from '../components/Form.vue';
@@ -12,38 +13,30 @@ export default {
   name: 'Checkout',
   setup() {
     const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
-
     const router = useRouter();
     const isLoading = ref(false);
-
     const cart = ref({});
-
     const loadingStatus = reactive({
       loadingItem: '',
     });
-
     const isHaveCoupon = ref(false);
-
     const codeMsg = ref('');
 
     onMounted(async () => {
       isLoading.value = true;
-
       getCart();
+      emitter.emit('get-cart');
     });
 
     // 取得 購物車商品
     const getCart = async () => {
       try {
         const res = await api.cart.getCart();
-
         cart.value = res.data;
-
         if (cart.value.carts[0].coupon) {
           isHaveCoupon.value = true;
           codeMsg.value = cart.value.carts[0].coupon.code;
         }
-
         isLoading.value = false;
       } catch (err) {
         isLoading.value = false;
@@ -53,12 +46,9 @@ export default {
 
     const createOrder = async (order) => {
       isLoading.value = true;
-
       try {
         const res = await api.order.addOrder({ data: order });
-
         router.push({ name: 'checkout-success', params: { id: res.orderId } });
-
         isLoading.value = false;
       } catch (err) {
         loadingStatus.loadingItem = '';
@@ -84,7 +74,6 @@ export default {
   <div class="container pt-4">
     <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
-
     <div class="mt-3">
       <div class="row flex-row-reverse justify-content-center pb-5">
         <div class="col-md-6" v-if="cart.carts">

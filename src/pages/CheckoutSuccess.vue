@@ -12,25 +12,18 @@ export default {
   name: 'CheckoutSuccess',
   setup() {
     const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
-
     const isLoading = ref(false);
-
     const route = useRoute();
-
     const order = ref({});
-
     const loadingStatus = reactive({
       loadingItem: '',
     });
-
     const couponData = ref({});
     const userData = ref({});
 
     onMounted(async () => {
       isLoading.value = true;
-
       const id = route.params.id;
-
       getOrder(id);
     });
 
@@ -38,13 +31,9 @@ export default {
     const getOrder = async (order_id) => {
       try {
         const res = await api.order.getOrder(order_id);
-
         order.value = res.order;
-
         couponData.value = Object.values(res.order.products)[0].coupon;
-
         userData.value = res.order.user;
-
         isLoading.value = false;
       } catch (err) {
         isLoading.value = false;

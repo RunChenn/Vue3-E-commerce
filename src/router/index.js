@@ -12,11 +12,6 @@ const routes = [
       requiresAuth: false,
     },
   },
-  // {
-  //   path: '/',
-  //   component: () => import('../pages/index.vue'),
-  // },
-  // 後台
   {
     path: '/admin',
     component: () => import('../pages/admin/index.vue'),
@@ -128,7 +123,6 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory('/Vue3-E-commerce/'),
-  // history: createWebHistory(),
   routes,
 });
 
@@ -138,15 +132,13 @@ router.beforeEach((to, from, next) => {
       return record.meta.requiresAuth;
     })
   ) {
-    // 如果沒有 token
     if (Cookies.getCookie() === '') {
-      // 轉跳到 login page
       next({ name: 'Login' });
     } else {
-      next(); // 往下繼續執行
+      next();
     }
   } else {
-    next(); // 往下繼續執行
+    next();
   }
 });
 

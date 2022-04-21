@@ -11,43 +11,34 @@ const axiosInstance = axios.create({
   timeout: 20000,
 });
 
-// request interceptor
 axiosInstance.interceptors.request.use(
   (res) => {
     if (Cookies && Cookies.getCookie()) {
       const token = Cookies.getCookie();
 
       token && (res.headers.common.Authorization = token);
-
-      // window.location.href = '/admin/products';
     }
     return res;
   },
   (err) => {
-    // console.log(err);
     return Promise.reject(err.response.data ? err.response.data : err.response);
   }
 );
 
-// response interceptor
 axiosInstance.interceptors.response.use(
   async (res) => {
     return res.data ? res.data : res;
   },
   (err) => {
-    // console.log(err.response);
     if (err && err.response) {
       switch (err.response.status) {
         case 400:
           break;
         case 401:
-          // window.location.href = '/login';
           router.push({ name: 'Login' });
           break;
         case 403:
-          // window.location.href = '/login';
           router.push({ name: 'Login' });
-
           break;
         case 500:
           break;
@@ -57,7 +48,6 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    // return Error object with Promise
     return Promise.reject(err.response.data ? err.response.data : err.response);
   }
 );

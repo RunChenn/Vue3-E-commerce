@@ -9,7 +9,6 @@ export default {
   name: 'Login',
   setup() {
     const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
-
     const router = useRouter();
     const email = ref('');
     const password = ref('');
@@ -22,7 +21,6 @@ export default {
 
       try {
         const { token, expired } = await api.adminAuth.login(data);
-
         Cookies.setCookie(tokenName, token, expired);
         router.push({ name: 'admin-Products' });
       } catch (err) {

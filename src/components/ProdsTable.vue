@@ -1,6 +1,4 @@
 <script>
-import { watch } from 'vue';
-
 export default {
   props: {
     products: {

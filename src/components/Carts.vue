@@ -1,4 +1,6 @@
 <script>
+import emitter from '../plugins/eventBus';
+
 export default {
   props: {
     cart: {
@@ -20,11 +22,35 @@ export default {
       }),
     },
   },
-  setup(props) {
-    const minusProd = () => {};
+  setup(props, { emit }) {
+    const minusItem = (item) => {
+      item.qty--;
+      if (item.qty < 1) {
+        item.qty = 1;
+        return;
+      }
+      const data = {
+        product_id: item.id,
+        qty: item.qty,
+      };
+      emitter.emit('get-cart');
+      emit('updateCart', data);
+    };
+
+    const addItem = (item) => {
+      item.qty++;
+
+      const data = {
+        product_id: item.id,
+        qty: item.qty,
+      };
+      emitter.emit('get-cart');
+      emit('updateCart', data);
+    };
 
     return {
-      minusProd,
+      addItem,
+      minusItem,
     };
   },
 };
@@ -52,13 +78,13 @@ export default {
           <td class="border-0 align-middle text-center" style="max-width: 160px">
             <div class="input-group pe-5">
               <div class="input-group-prepend">
-                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon1" @click="item.qty--" :disabled="item.qty === 1">
+                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon1" @click="minusItem(item)" :disabled="item.qty === 1">
                   <i class="fas fa-minus"></i>
                 </button>
               </div>
               <input type="text" class="form-control border-0 text-center my-auto shadow-none qtyInput" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" disabled v-model="item.qty" />
               <div class="input-group-append">
-                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon2" @click="item.qty++">
+                <button class="btn btn-outline-dark border-0 py-2" type="button" id="button-addon2" @click="addItem(item)">
                   <i class="fas fa-plus"></i>
                 </button>
               </div>

@@ -1,11 +1,12 @@
 <script>
-import { ref } from 'vue';
+import { ref, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
 import api from '../api/index.js';
 
 export default {
   name: 'admin',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
     const router = useRouter();
     const checkSuccess = ref(false);
 
@@ -14,7 +15,7 @@ export default {
         await api.auth.logout();
         router.push({ name: 'Login' });
       } catch (err) {
-        alert(err.message);
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 

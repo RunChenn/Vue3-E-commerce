@@ -4,7 +4,7 @@ import CouponModal from '../../components/admin/CouponModal.vue';
 import DelModal from '../../components/admin/DelModal.vue';
 import api from '../../api/index.js';
 import { Modal } from 'bootstrap';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 
 export default {
   components: {
@@ -14,15 +14,12 @@ export default {
   },
   name: 'admin-Coupons',
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
     const isLoading = ref(false);
-
     const isNew = ref(false);
-
     const couponModal = ref({});
     const delModal = ref({});
-
     const pagination = ref({});
-
     const coupons = ref({});
 
     const tempCoupon = ref({
@@ -48,32 +45,27 @@ export default {
         await api.auth.checkAuth();
         getCoupons();
       } catch (err) {
-        alert(err.message);
+        $httpMsgState(err, '錯誤訊息');
       }
     });
 
     // 載入所有優惠券
     const getCoupons = async (page = 1) => {
       currentPage.value = page;
-
       isLoading.value = true;
-
       try {
         const couponsData = await api.adminCoupon.getCoupons(page);
-
         coupons.value = couponsData.coupons;
         pagination.value = couponsData.pagination;
-
         isLoading.value = false;
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
     const openCouponModal = (status, item) => {
       isNew.value = status === 'new' ? true : false;
-
       tempCoupon.value =
         status === 'new'
           ? {
@@ -85,7 +77,6 @@ export default {
     // 新增/編輯 商品
     const updateCoupon = async () => {
       isLoading.value = true;
-
       let data = tempCoupon.value;
 
       // 新增
@@ -94,57 +85,42 @@ export default {
           const res = await api.adminCoupon.updateCoupon(tempCoupon.value.id, {
             data,
           });
-
-          alert(res.message);
-
           getCoupons();
-
           isLoading.value = false;
-
+          $httpMsgState(res, '新增優惠券');
           couponModal.value.hide();
         } catch (err) {
-          alert(err.message);
           isLoading.value = false;
+          $httpMsgState(err, '錯誤訊息');
         }
-
         return;
       }
 
       // 編輯
       try {
         data = tempCoupon.value;
-
         const res = await api.adminCoupon.updateCoupon(tempCoupon.value.id, {
           data,
         });
-
-        alert(res.message);
-
-        getCoupons();
-
         isLoading.value = false;
-
+        $httpMsgState(res, '編輯優惠券');
         couponModal.value.hide();
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
     const delCoupon = async () => {
       try {
         const res = await api.adminCoupon.delCoupon(tempCoupon.value.id);
-
         isLoading.value = false;
-
-        alert(res.message);
-
+        $httpMsgState(res, '刪除優惠券');
         delModal.value.hide();
-
         getCoupons(currentPage.value);
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '刪除優惠券');
       }
     };
 
@@ -165,7 +141,6 @@ export default {
 
 <template>
   <div class="container">
-    <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
 
     <div class="row py-1">
@@ -203,7 +178,6 @@ export default {
         </table>
       </div>
     </div>
-    <!-- <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination> -->
     <Pagination v-model:pages="pagination" @update-pages="getCoupons" />
 
     <CouponModal v-model:coupon="tempCoupon" v-model:is-new="isNew" ref="couponModal" @update-coupon="updateCoupon" />

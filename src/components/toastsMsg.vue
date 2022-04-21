@@ -6,16 +6,12 @@
         <strong class="me-auto">{{ msg.title }}</strong>
         <button type="button" class="btn-close" @click="clearToast(key)" aria-label="Close"></button>
       </div>
-      <!-- <div class="toast-body" v-if="msg.content">
-        {{ msg.content }}
-      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
-
 import emitter from '../plugins/eventBus';
 
 export default {

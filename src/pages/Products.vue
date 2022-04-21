@@ -1,6 +1,7 @@
 <script>
 import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
 import api from '../api/index.js';
+import emitter from '../plugins/eventBus';
 
 import Breadcrumb from '../components/Breadcrumb.vue';
 import ProdsTable from '../components/ProdsTable.vue';
@@ -15,38 +16,27 @@ export default {
   name: 'Products',
   setup() {
     const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
-
     const isLoading = ref(false);
-
     const pagination = ref({});
-
     const products = ref([]);
     const categorys = ref([]);
-
     const cart = ref({});
-
     const loadingStatus = reactive({
       loadingItem: '',
     });
 
     onMounted(async () => {
       isLoading.value = true;
-
       getProducts();
     });
 
-    // 載入所有商品
     const getProducts = async (page = 1) => {
       try {
         const prodsData = await api.products.getProducts(page);
-
         const data = prodsData.products;
         pagination.value = prodsData.pagination;
-
         let categoryList = data.map((ele) => ele.category);
-
         categorys.value = [...new Set(categoryList)];
-
         products.value = data;
         isLoading.value = false;
       } catch (err) {
@@ -55,20 +45,16 @@ export default {
       }
     };
 
-    // 加入購物車
     const addToCart = async (id) => {
       try {
         loadingStatus.loadingItem = id;
-
         const cart = {
           product_id: id,
           qty: qty.value,
         };
-
         const res = await api.cart.addCart({ data: cart });
-
+        emitter.emit('get-cart');
         $httpMsgState(res, '加入購物車');
-
         loadingStatus.loadingItem = '';
       } catch (err) {
         $httpMsgState(err, '加入購物車');
@@ -96,38 +82,14 @@ export default {
 
 <template>
   <div class="container pt-4 mb-5">
-    <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
     <Carousel />
     <div class="row mt-3">
-      <!-- <div class="col-md-3">
-        <div class="accordion border border-bottom border-top-0 border-start-0 border-end-0 mb-3" id="accordionExample">
-          <div class="card border-0" v-for="category in categorys" :key="category">
-            <div class="card-header px-0 py-4 bg-white border border-bottom-0 border-top border-start-0 border-end-0 rounded-0" id="headingOne" data-bs-toggle="collapse" data-bs-target="#collapseOne">
-              <div class="d-flex justify-content-between align-items-center pe-1">
-                <h4 class="mb-0">{{ category }}</h4>
-                <i class="fas fa-chevron-down"></i>
-              </div>
-            </div>
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-              <div class="card-body py-0">
-                <ul class="list-unstyled">
-                  <li>
-                    <a href="#" class="py-2 d-block text-muted">Lorem ipsum</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
       <div class="col-md-12">
         <Breadcrumb />
       </div>
       <div class="col-md-12">
-        <!-- 產品列表 -->
         <ProdsTable v-model:products="products" v-model:loadingStatus="loadingStatus" @get-product="getProducts" @add-to-cart="addToCart" />
-
         <Pagination v-model:pages="pagination" @update-pages="getProducts" />
       </div>
     </div>

@@ -18,7 +18,6 @@ export default {
       () => route.matched,
       (newVal) => {
         const matched = newVal;
-
         state.list = matched.filter((item) => item.meta.hidden !== true);
       }
     );

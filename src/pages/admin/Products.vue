@@ -5,7 +5,7 @@ import DelModal from '../../components/admin/DelModal.vue';
 import api from '../../api/index.js';
 import { Modal } from 'bootstrap';
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 
 export default {
   components: {
@@ -16,26 +16,19 @@ export default {
   name: 'admin-Products',
   props: ['token'],
   setup() {
+    const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
     const isLoading = ref(false);
-
     const products = ref([]);
-
     const productModal = ref({});
     const delModal = ref({});
-
     const pagination = ref({});
-
     const isNew = ref(false);
-
     const product = ref({ imagesUrl: [], id: '' });
 
     onMounted(async () => {
-      productModal.value = new Modal(
-        document.getElementById('adminProductModal'),
-        {
-          keyboard: false,
-        }
-      );
+      productModal.value = new Modal(document.getElementById('adminProductModal'), {
+        keyboard: false,
+      });
 
       delModal.value = new Modal(document.getElementById('delModal'), {
         keyboard: false,
@@ -46,8 +39,7 @@ export default {
         await api.auth.checkAuth();
         getData();
       } catch (err) {
-        console.log(err);
-        alert(err.message);
+        $httpMsgState(err, '錯誤訊息');
       }
     });
 
@@ -56,19 +48,17 @@ export default {
       isLoading.value = true;
       try {
         const prodsData = await api.adminProducts.getProducts(page);
-
         products.value = prodsData.products;
         pagination.value = prodsData.pagination;
         isLoading.value = false;
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
     const openModal = (status, item) => {
       isNew.value = status === 'new' ? true : false;
-
       product.value =
         status === 'new'
           ? {
@@ -91,14 +81,12 @@ export default {
           const res = await api.adminProducts.addProducts({
             data: product.value,
           });
-
-          alert(res.message);
-
+          $httpMsgState(res, '新增商品');
           productModal.value.hide();
-
           getData();
         } catch (err) {
-          alert(err.message);
+          productModal.value.hide();
+          $httpMsgState(err, '新增失敗');
         }
         return;
       }
@@ -108,33 +96,28 @@ export default {
         const res = await api.adminProducts.updateProducts(product.value.id, {
           data: product.value,
         });
-
-        alert(res.message);
-
+        $httpMsgState(res, '編輯商品');
         productModal.value.hide();
-
         getData();
       } catch (err) {
-        alert(err.message);
+        productModal.value.hide();
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
     // 刪除商品
     const delProduct = async () => {
       isLoading.value = true;
-
       try {
         const res = await api.adminProducts.delProducts(product.value.id);
-
-        alert(res.message);
-
         isLoading.value = false;
-
+        $httpMsgState(res, '刪除商品');
         delModal.value.hide();
         getData();
       } catch (err) {
-        alert(err.message);
         isLoading.value = false;
+        delModal.value.hide();
+        $httpMsgState(err, '錯誤訊息');
       }
     };
 
@@ -158,19 +141,10 @@ export default {
   <div class="container">
     <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
-
     <div class="row py-1">
       <div class="col-12 col-sm-12">
         <div class="text-end mb-3">
-          <button
-            type="button"
-            class="btn btn-success"
-            @click="openModal('new')"
-            data-bs-toggle="modal"
-            data-bs-target="#adminProductModal"
-          >
-            建立新的產品
-          </button>
+          <button type="button" class="btn btn-success" @click="openModal('new')" data-bs-toggle="modal" data-bs-target="#adminProductModal">建立新的產品</button>
         </div>
         <table class="table table-hover mt-4">
           <thead>
@@ -188,14 +162,7 @@ export default {
             <tr v-for="item in products" :key="item.id">
               <td>{{ item.category }}</td>
               <td style="width: 200px">
-                <div
-                  style="
-                    height: 100px;
-                    background-size: cover;
-                    background-position: center;
-                  "
-                  :style="{ backgroundImage: `url(${item.imageUrl})` }"
-                ></div>
+                <div style="height: 100px; background-size: cover; background-position: center" :style="{ backgroundImage: `url(${item.imageUrl})` }"></div>
               </td>
               <td>{{ item.title }}</td>
               <td class="text-end">
@@ -209,39 +176,17 @@ export default {
                 <span v-else>未啟用</span>
               </td>
               <td>
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-sm me-2 mb-md-1"
-                  data-bs-target="#adminProductModal"
-                  data-bs-toggle="modal"
-                  @click="openModal('edit', item)"
-                >
-                  編輯
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-outline-danger btn-sm me-2 mb-md-1"
-                  data-bs-target="#delModal"
-                  data-bs-toggle="modal"
-                  @click="openModal('delete', item)"
-                >
-                  刪除
-                </button>
+                <button type="button" class="btn btn-outline-primary btn-sm me-2 mb-md-1" data-bs-target="#adminProductModal" data-bs-toggle="modal" @click="openModal('edit', item)">編輯</button>
+                <button type="button" class="btn btn-outline-danger btn-sm me-2 mb-md-1" data-bs-target="#delModal" data-bs-toggle="modal" @click="openModal('delete', item)">刪除</button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <!-- <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination> -->
     <Pagination v-model:pages="pagination" @update-pages="getData" />
-
     <!-- Modal -->
-    <ProdModal
-      v-model:product="product"
-      v-model:is-new="isNew"
-      @updateProduct="updateProduct"
-    />
+    <ProdModal v-model:product="product" v-model:is-new="isNew" @updateProduct="updateProduct" />
     <!-- delModal -->
     <DelModal ref="delModal" v-model:item="product" @del-item="delProduct" />
   </div>

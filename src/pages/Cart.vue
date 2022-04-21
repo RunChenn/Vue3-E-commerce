@@ -1,6 +1,7 @@
 <script>
 import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
 import api from '../api/index.js';
+import emitter from '../plugins/eventBus';
 
 import Carts from '../components/Carts.vue';
 import Form from '../components/Form.vue';
@@ -11,26 +12,20 @@ export default {
   name: 'Products',
   setup() {
     const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
-
     const isLoading = ref(false);
-
     const cart = ref({});
-
     const codeText = ref('');
-
     const loadingStatus = reactive({
       loadingItem: '',
     });
-
     const isHaveCoupon = ref(false);
     const couponTotal = ref(0);
-
     const codeMsg = ref('');
 
-    onMounted(async () => {
+    onMounted(() => {
       isLoading.value = true;
-
       getCart();
+      emitter.emit('get-cart');
     });
 
     // 取得 購物車商品
@@ -52,19 +47,15 @@ export default {
       productModal.value.hide();
       try {
         loadingStatus.loadingItem = id;
-
         const cart = {
           product_id: id,
           qty,
         };
-
         const res = await api.cart.addCart({ data: cart });
-
         $httpMsgState(res, '加入購物車');
-
         loadingStatus.loadingItem = '';
-
         getCart();
+        emitter.emit('get-cart');
       } catch (err) {
         $httpMsgState(err, '加入購物車');
       }
@@ -74,13 +65,11 @@ export default {
     const removeCartItem = async (id) => {
       try {
         const res = await api.cart.removeCartItem(id);
-
         loadingStatus.loadingItem = id;
-
         $httpMsgState(res, '移除購物車品項');
         loadingStatus.loadingItem = '';
-
         getCart();
+        emitter.emit('get-cart');
       } catch (err) {
         $httpMsgState(err, '移除購物車品項');
       }
@@ -90,9 +79,9 @@ export default {
     const removeCartAll = async () => {
       try {
         const res = await api.cart.removeCartAll();
-
         $httpMsgState(res, '清除購物車');
         getCart();
+        emitter.emit('get-cart');
       } catch (err) {
         $httpMsgState(err, '清除購物車');
       }
@@ -102,17 +91,15 @@ export default {
     const updateCart = async (data) => {
       try {
         loadingStatus.loadingItem = data.id;
-
         const cart = {
           product_id: data.product_id,
           qty: data.qty,
         };
-
-        const res = await api.cart.updateCart({ data: cart });
-
+        const res = await api.cart.updateCart(data.product_id, { data: cart });
         $httpMsgState(res, '更新購物車');
         loadingStatus.loadingItem = '';
         getCart();
+        emitter.emit('get-cart');
       } catch (err) {
         loadingStatus.loadingItem = '';
         $httpMsgState(err, '更新購物車');
@@ -123,21 +110,17 @@ export default {
     const addConpon = async () => {
       try {
         loadingStatus.loadingItem = codeText.value !== '';
-
         const code = {
           code: codeText.value,
         };
-
         const res = await api.coupon.addConpon({ data: code });
-
         isHaveCoupon.value = true;
         codeText.value = '';
-
         codeMsg.value = res.message.split(':')[1];
-
         $httpMsgState(res, '加入優惠券');
         loadingStatus.loadingItem = '';
         getCart();
+        emitter.emit('get-cart');
       } catch (err) {
         loadingStatus.loadingItem = '';
         $httpMsgState(err, '加入優惠券');
@@ -167,7 +150,6 @@ export default {
   <div class="container pt-4">
     <!-- Loading -->
     <Loading v-model:active="isLoading" :is-full-page="true" />
-
     <div class="mt-3">
       <h3 class="mt-3 mb-4"><i class="fas fa-shopping-cart"></i>&nbsp;購物車</h3>
       <div class="row" v-if="cart.carts && cart.carts.length !== 0">
@@ -209,7 +191,6 @@ export default {
               <p class="mb-0 h4 fw-bold">總金額</p>
               <p class="mb-0 h4 fw-bold">NT${{ cart.final_total }}</p>
             </div>
-            <!-- <a href="./checkout.html" class="btn btn-dark w-100 mt-4">前往結帳</a> -->
             <router-link class="btn btn-dark w-100 mt-4" to="/checkout" v-if="cart.carts && cart.carts.length !== 0">前往結帳</router-link>
           </div>
         </div>
@@ -220,7 +201,6 @@ export default {
           <router-link class="btn btn-primary" to="/products">繼續購物</router-link>
         </div>
       </div>
-
       <div class="my-5">
         <h3 class="fw-bold">相關產品</h3>
         <RelatedProds />

@@ -4,34 +4,26 @@ import { getCurrentInstance, ref, reactive, onMounted, watch, onUnmounted } from
 import { useRoute } from 'vue-router';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import RelatedProds from '../components/RelatedProds.vue';
+import emitter from '../plugins/eventBus';
 
 export default {
   components: { Breadcrumb, RelatedProds },
   name: 'Home',
   setup() {
     const $httpMsgState = getCurrentInstance()?.appContext.config.globalProperties.$httpMsgState;
-
     let { proxy } = getCurrentInstance();
-
     const isLoading = ref(false);
-
     const product = ref({});
-
     const route = useRoute();
-
     const loadingStatus = reactive({
       loadingItem: '',
     });
-
     const qty = ref(1);
 
     onMounted(async () => {
       isLoading.value = true;
-
       window.addEventListener('scroll', handleScroll());
-
       const id = route.params.id;
-
       getProduct(id);
     });
 
@@ -39,16 +31,12 @@ export default {
       document.removeEventListener('scroll', handleScroll());
     });
 
-    // watch 監聽路由發生變化
     watch(
       () => route.fullPath,
       async (newVal) => {
-        // 確保路由還在當前頁
         if (route.name === 'ProductDetail') {
           const id = route.params.id;
-
           getProduct(id);
-
           goTop();
         }
       }
@@ -69,11 +57,9 @@ export default {
       }, 10);
     };
 
-    // 載入單一商品
     const getProduct = async (id) => {
       try {
         const prodsData = await api.products.getProduct(id);
-
         product.value = prodsData.product;
         isLoading.value = false;
       } catch (err) {
@@ -82,20 +68,16 @@ export default {
       }
     };
 
-    // 加入購物車
     const addToCart = async (id) => {
       try {
         loadingStatus.loadingItem = id;
-
         const cart = {
           product_id: id,
           qty: qty.value,
         };
-
         const res = await api.cart.addCart({ data: cart });
-
+        emitter.emit('get-cart');
         $httpMsgState(res, '加入購物車');
-
         loadingStatus.loadingItem = '';
       } catch (err) {
         $httpMsgState(err, '加入購物車');

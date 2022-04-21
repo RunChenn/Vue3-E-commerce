@@ -69,7 +69,6 @@ export default {
                 </div>
               </div>
             </div>
-            <!-- col-sm-6 end -->
           </div>
         </div>
       </div>
@@ -83,8 +82,6 @@ export default {
 .btn-group > .btn:nth-child(n + 3),
 .btn-group > :not(.btn-check) + .btn,
 .btn-group > .btn-group:not(:first-child) > .btn {
-  // border-top-right-radius: 0.25rem;
-  // border-bottom-right-radius: 0.25rem;
   border-radius: 0.25rem;
   margin-right: 10px;
   min-width: 45px;
